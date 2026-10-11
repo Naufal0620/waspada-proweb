@@ -167,4 +167,133 @@ class RiskAssessmentTest extends TestCase
 
         $this->assertDatabaseCount('assessments', 0);
     }
+    
+    public function test_partial_pattern_match_is_not_detected(): void
+    {
+        $identity = $this->createIndicator(
+            'identity',
+            'Mengaku sebagai pihak resmi'
+        );
+
+        $credential = $this->createIndicator(
+            'credential',
+            'Meminta kode OTP atau kata sandi'
+        );
+
+        $link = $this->createIndicator(
+            'link',
+            'Mengirim tautan yang mencurigakan'
+        );
+
+        $this->createPattern(
+            'Phishing melalui Tautan',
+            'high',
+            [$identity, $credential, $link]
+        );
+
+        // Hanya dua dari tiga indikator pola yang dipilih.
+        $response = $this->postJson('/assessments', [
+            'indicators' => [
+                $identity->id,
+                $credential->id,
+            ],
+        ]);
+
+        $response
+            ->assertCreated()
+            ->assertJsonPath('data.risk_level', 'low')
+            ->assertJsonCount(0, 'data.matched_patterns');
+    }
+
+    public function test_multiple_matching_patterns_are_returned(): void
+    {
+        $identity = $this->createIndicator(
+            'identity',
+            'Mengaku sebagai pihak resmi'
+        );
+
+        $credential = $this->createIndicator(
+            'credential',
+            'Meminta kode OTP atau kata sandi'
+        );
+
+        $link = $this->createIndicator(
+            'link',
+            'Mengirim tautan yang mencurigakan'
+        );
+
+        $this->createPattern(
+            'Phishing melalui Tautan',
+            'high',
+            [$identity, $credential]
+        );
+
+        $this->createPattern(
+            'Penipuan Mengatasnamakan Pihak Resmi',
+            'warning',
+            [$identity, $link]
+        );
+
+        // Pilihan ini cocok dengan kedua pola.
+        $response = $this->postJson('/assessments', [
+            'indicators' => [
+                $identity->id,
+                $credential->id,
+                $link->id,
+            ],
+        ]);
+
+        $response
+            ->assertCreated()
+            ->assertJsonPath('data.risk_level', 'high')
+            ->assertJsonCount(2, 'data.matched_patterns')
+            ->assertJsonFragment([
+                'name' => 'Phishing melalui Tautan',
+            ])
+            ->assertJsonFragment([
+                'name' => 'Penipuan Mengatasnamakan Pihak Resmi',
+            ]);
+    }
+
+    public function test_inactive_indicator_is_rejected(): void
+    {
+        $indicator = Indicator::create([
+            'category' => 'credential',
+            'label' => 'Indikator yang sudah tidak aktif',
+            'is_active' => false,
+        ]);
+
+        $response = $this->postJson('/assessments', [
+            'indicators' => [$indicator->id],
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('indicators');
+
+        $this->assertDatabaseCount('assessments', 0);
+    }
+
+    
+    public function test_duplicate_indicators_are_rejected(): void
+    {
+        $indicator = $this->createIndicator(
+            'identity',
+            'Mengaku sebagai pihak resmi'
+        );
+
+        $response = $this->postJson('/assessments', [
+            'indicators' => [
+                $indicator->id,
+                $indicator->id,
+            ],
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('indicators.1');
+
+        $this->assertDatabaseCount('assessments', 0);
+    }
+
 }

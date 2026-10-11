@@ -52,7 +52,7 @@ class RiskAssessmentService
                             $selectedIds
                         ));
                 }
-            );
+            )->values();
 
             $riskLevel = 'low';
 
@@ -70,6 +70,12 @@ class RiskAssessmentService
             ]);
 
             $assessment->indicators()->sync($selectedIds);
+
+            // Sertakan pola yang benar-benar cocok dalam hasil.
+            $assessment->setRelation(
+                'matchedPatterns',
+                $matchedPatterns
+            );
 
             return $assessment->load('indicators');
         });

@@ -27,4 +27,21 @@ class Assessment extends Model
             'indicator_id'
         );
     }
+
+    public function matchedPatterns()
+    {
+        return $this->belongsToMany(
+            Pattern::class,
+            'pattern_indicators',
+            'indicator_id',
+            'pattern_id',
+            'id',
+            'id'
+        )->whereHas('indicators', function ($query) {
+            $query->whereIn(
+                'indicators.id',
+                $this->indicators()->select('indicators.id')
+            );
+        });
+    }
 }
