@@ -168,6 +168,19 @@
         <div class="eyebrow">Pemeriksaan risiko digital</div>
 
         <h1>Kenali risikonya sebelum bertransaksi.</h1>
+        
+        @if (Auth::check())
+            <span>Halo, {{ Auth::user()->name }}!</span>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Daftar</a>
+        @endif
+
 
         <p class="intro">
             Pilih tanda-tanda yang kamu temukan pada situasi yang sedang
