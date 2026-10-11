@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -58,4 +59,30 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class, 'reviewed_by');
     }
+
+    public function discussions(): HasMany
+    {
+        return $this->hasMany(Discussion::class);
+    }
+
+    public function discussionComments(): HasMany
+    {
+        return $this->hasMany(DiscussionComment::class);
+    }
+
+    public function discussionVotes(): HasMany
+    {
+        return $this->hasMany(DiscussionVote::class);
+    }
+
+    public function discussionReports(): HasMany
+    {
+        return $this->hasMany(DiscussionReport::class, 'reporter_id');
+    }
+
+    public function reviewedDiscussionReports(): HasMany
+    {
+        return $this->hasMany(DiscussionReport::class, 'reviewed_by');
+    }
+
 }
