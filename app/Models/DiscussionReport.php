@@ -14,6 +14,13 @@ class DiscussionReport extends Model
         'details',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'reviewed_at' => 'datetime',
+        ];
+    }
+
     public function discussion(): BelongsTo
     {
         return $this->belongsTo(Discussion::class);

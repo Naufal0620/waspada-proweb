@@ -207,8 +207,16 @@
 
     <main class="container">
         @if (session('success'))
-            <div style="background:#e8f7ed;color:#17663a;padding:14px;border-radius:10px;margin-bottom:20px;">
+            <div style="padding:14px;background:#e8f7ed;color:#17663a;border-radius:10px;margin-bottom:16px;">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div style="padding:14px;background:#fff0f0;color:#b42318;border-radius:10px;margin-bottom:16px;">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
             </div>
         @endif
         <a href="{{ route('forum.index') }}" class="back">
@@ -249,6 +257,41 @@
             </span>
 
             <h1>{{ $discussion->title }}</h1>
+
+            @auth
+                <details style="margin: 20px 0;">
+                    <summary style="cursor:pointer;color:#dc3545;font-weight:600;">
+                        ⚑ Laporkan Diskusi
+                    </summary>
+
+                    <form action="{{ route('forum.reports.store', $discussion->slug) }}" method="POST"
+                        style="margin-top:15px;">
+                        @csrf
+
+                        <label for="reason">Alasan laporan</label>
+
+                        <select id="reason" name="reason" required>
+                            <option value="">Pilih alasan</option>
+                            <option value="Informasi menyesatkan">Informasi menyesatkan</option>
+                            <option value="Dugaan penipuan">Dugaan penipuan</option>
+                            <option value="Spam">Spam</option>
+                            <option value="Data pribadi">Memuat data pribadi</option>
+                            <option value="Pelecehan">Pelecehan atau serangan personal</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+
+                        <label for="details" style="display:block;margin-top:12px;">
+                            Keterangan tambahan (opsional)
+                        </label>
+
+                        <textarea id="details" name="details" rows="3" maxlength="2000"
+                            placeholder="Jelaskan alasan laporan secara singkat..."></textarea>
+
+                        <button type="submit">Kirim Laporan</button>
+                    </form>
+                </details>
+            @endauth
+
 
             <div class="meta">
                 <span>Oleh {{ $discussion->user->name }}</span>
