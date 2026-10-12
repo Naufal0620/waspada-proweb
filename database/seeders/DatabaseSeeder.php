@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             IndicatorSeeder::class,
+            AssessmentQuestionSeeder::class,
             PatternSeeder::class,
         ]);
     }

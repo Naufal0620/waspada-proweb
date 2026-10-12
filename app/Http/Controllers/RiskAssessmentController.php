@@ -13,68 +13,36 @@ class RiskAssessmentController extends Controller
      */
     public function create()
     {
-        $indicators = Indicator::query()
+        $questions = \App\Models\AssessmentQuestion::query()
             ->where('is_active', true)
-            ->orderBy('category')
-            ->orderBy('label')
+            ->with('options')
+            ->orderBy('sort_order')
             ->get();
 
-        return view('assessments.create', compact('indicators'));
+        return view('assessments.create', compact('questions'));
     }
 
     /**
      * Memproses penilaian risiko berdasarkan indikator pilihan pengguna.
      */
+   
     public function store(
-        Request $request,
-        RiskAssessmentService $service
+        \Illuminate\Http\Request $request,
+        \App\Services\RiskAssessmentService $service
     ) {
         $validated = $request->validate([
-            'indicators' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-            'indicators.*' => [
-                'required',
-                'integer',
-                'distinct',
-                'exists:indicators,id',
-            ],
+            'answers' => ['required', 'array', 'min:1'],
+            'answers.*' => ['required', 'integer'],
         ]);
 
-        // Hitung tingkat risiko dan pola yang cocok.
-        $assessment = $service->assess(
-            $validated['indicators']
-        );
+        $assessment = $service->assess($validated['answers']);
 
-        // Respons JSON untuk API atau permintaan AJAX.
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Penilaian risiko berhasil dilakukan.',
-                'data' => [
-                    'id' => $assessment->id,
-                    'session_id' => $assessment->session_id,
-                    'risk_level' => $assessment->risk_level,
+        $matchedPatterns = $assessment->matchedPatterns;
 
-                    'indicators' => $assessment->indicators,
-
-                    'matched_patterns' => $assessment
-                        ->matchedPatterns
-                        ->map(fn ($pattern) => [
-                            'name' => $pattern->name,
-                            'description' => $pattern->description,
-                            'risk_level' => $pattern->risk_level,
-                        ])
-                        ->values(),
-                ],
-            ], 201);
-        }
-
-        // Tampilkan halaman hasil untuk pengguna web biasa.
         return view('assessments.result', [
-            'assessment' => $assessment,
-            'matchedPatterns' => $assessment->matchedPatterns,
+            'assessment' => $assessment->load('answers.question', 'answers.option', 'indicators'),
+            'matchedPatterns' => $matchedPatterns,
         ]);
     }
+
 }

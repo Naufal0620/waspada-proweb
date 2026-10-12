@@ -11,11 +11,18 @@ class Assessment extends Model
     protected $fillable = [
         'session_id',
         'risk_level',
+        'information_status',
+        'match_status',
     ];
+
 
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
+    }
+    public function answers(): HasMany
+    {
+        return $this->hasMany(AssessmentAnswer::class);
     }
 
     public function indicators(): BelongsToMany
