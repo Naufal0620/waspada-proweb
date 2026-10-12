@@ -52,41 +52,65 @@ class DiscussionReportController extends Controller
             ],
         ]);
 
-        $report = DiscussionReport::with('discussion')->findOrFail($id);
+        $result = DB::transaction(function () use ($id, $validated, $request) {
+            $report = DiscussionReport::with('discussion')
+                ->lockForUpdate()
+                ->findOrFail($id);
 
-        if (!in_array($report->status, ['pending', 'reviewed'])) {
-            return back()->withErrors([
-                'status' => 'Laporan ini sudah selesai diproses.',
-            ]);
-        }
+            if (!in_array($report->status, ['pending', 'reviewed'], true)) {
+                return 'completed';
+            }
 
-        if (
-            $validated['status'] === 'reviewed'
-            && $report->status !== 'pending'
-        ) {
-            return back()->withErrors([
-                'status' => 'Laporan ini sudah ditinjau.',
-            ]);
-        }
+            if (
+                $validated['status'] === 'reviewed'
+                && $report->status !== 'pending'
+            ) {
+                return 'already_reviewed';
+            }
 
-        DB::transaction(function () use ($report, $validated, $request) {
+            if (
+                $validated['status'] === 'actioned'
+                && !$report->discussion
+            ) {
+                return 'discussion_missing';
+            }
+
             if ($validated['status'] === 'actioned') {
-                $discussion = $report->discussion;
-
-                $discussion->status = 'hidden';
-                $discussion->save();
+                $report->discussion->status = 'hidden';
+                $report->discussion->save();
             }
 
             $report->status = $validated['status'];
             $report->reviewed_by = $request->user()->id;
             $report->reviewed_at = now();
             $report->save();
+
+            return 'success';
         });
 
+        if ($result === 'completed') {
+            return back()->withErrors([
+                'status' => 'Laporan ini sudah selesai diproses.',
+            ]);
+        }
+
+        if ($result === 'already_reviewed') {
+            return back()->withErrors([
+                'status' => 'Laporan ini sudah ditinjau.',
+            ]);
+        }
+
+        if ($result === 'discussion_missing') {
+            return back()->withErrors([
+                'status' => 'Diskusi terkait tidak tersedia.',
+            ]);
+        }
+
         return redirect()
-            ->route('moderator.reports.show', $report->id)
+            ->route('moderator.reports.show', $id)
             ->with('success', 'Laporan berhasil diproses.');
     }
+
 
 
 }

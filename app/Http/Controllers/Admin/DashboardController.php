@@ -29,6 +29,15 @@ class DashboardController extends Controller
         )->count();
 
         $totalPatterns = Pattern::count();
+        
+        $latestDiscussions = Discussion::latest()
+            ->take(5)
+            ->get();
+
+        $latestReports = DiscussionReport::with('discussion')
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalUsers',
@@ -36,7 +45,10 @@ class DashboardController extends Controller
             'pendingDiscussions',
             'totalReports',
             'pendingReports',
-            'totalPatterns'
+            'totalPatterns',
+            'latestDiscussions',
+            'latestReports'
         ));
+
     }
 }

@@ -349,7 +349,7 @@
                 </a>
 
 
-                <a href="{{ route('moderator.reports.index') }}"
+                <a href="{{ route('admin.reports.index') }}"
                     class="admin-nav-link {{ ($activeMenu ?? '') === 'reports' ? 'active' : '' }}">
                     <span class="admin-nav-icon">⚑</span>
                     Laporan Diskusi

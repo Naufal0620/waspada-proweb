@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Moderator\DashboardController as ModeratorDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Moderator\DiscussionReportController as ModeratorDiscussionReportController;
+use App\Http\Controllers\Admin\DiscussionReportController as AdminDiscussionReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,23 +75,55 @@ Route::post('/logout', [
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Admin
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
         Route::get('/', [
             AdminDashboardController::class,
             'index',
         ])->name('dashboard');
 
-        Route::get('/users', [UserManagementController::class, 'index'])
-            ->name('users.index');
+        // Manajemen pengguna
+        Route::get('/users', [
+            UserManagementController::class,
+            'index',
+        ])->name('users.index');
 
-        Route::get('/users/{user}', [UserManagementController::class, 'show'])
-            ->name('users.show');
+        Route::get('/users/{user}', [
+            UserManagementController::class,
+            'show',
+        ])->name('users.show');
 
         Route::patch('/users/{user}/role', [
             UserManagementController::class,
             'updateRole',
         ])->name('users.role.update');
+
+        // Laporan khusus Admin
+        Route::get('/reports', [
+            AdminDiscussionReportController::class,
+            'index',
+        ])->name('reports.index');
+
+        Route::get('/reports/{id}', [
+            AdminDiscussionReportController::class,
+            'show',
+        ])->whereNumber('id')->name('reports.show');
+
+        Route::patch('/reports/{id}/status', [
+            AdminDiscussionReportController::class,
+            'update',
+        ])->whereNumber('id')->name('reports.update');
     });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -146,26 +179,32 @@ Route::prefix('forum')->name('forum.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin,moderator'])->prefix('moderator')->name('moderator.')->group(function () {
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard Moderator
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:moderator'])
+    ->prefix('moderator')
+    ->name('moderator.')
+    ->group(function () {
         Route::get('/', [
             ModeratorDashboardController::class,
             'index',
         ])->name('dashboard');
 
-        // Daftar laporan
         Route::get('/reports', [
             ModeratorDiscussionReportController::class,
             'index',
         ])->name('reports.index');
 
-        // Detail laporan
         Route::get('/reports/{id}', [
             ModeratorDiscussionReportController::class,
             'show',
         ])->whereNumber('id')->name('reports.show');
 
-        // Memproses status laporan
         Route::patch('/reports/{id}/status', [
             ModeratorDiscussionReportController::class,
             'update',
