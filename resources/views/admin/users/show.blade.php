@@ -1,352 +1,125 @@
 @extends('layouts.admin')
 
-@section('title', 'Detail Pengguna')
+@section('title', 'Detail Pengguna: ' . $user->name)
 @section('breadcrumb', 'Manajemen Pengguna / Detail')
 
 @php($activeMenu = 'users')
 
 @section('content')
+<div class="space-y-6 max-w-4xl mx-auto">
+
+    {{-- Session Alerts --}}
     @if (session('success'))
-        <div style="padding: 14px 16px; margin-bottom: 18px; border-radius: 10px; background: #e7f8ef; color: #18794e;">
+        <x-alert type="success">
             {{ session('success') }}
-        </div>
+        </x-alert>
     @endif
 
     @if (session('error'))
-        <div style="padding: 14px 16px; margin-bottom: 18px; border-radius: 10px; background: #fff0f0; color: #b42318;">
+        <x-alert type="error">
             {{ session('error') }}
-        </div>
+        </x-alert>
     @endif
 
     @if ($errors->any())
-        <div style="padding: 14px 16px; margin-bottom: 18px; border-radius: 10px; background: #fff0f0; color: #b42318;">
+        <x-alert type="error">
             @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
+                <p>{{ $error }}</p>
             @endforeach
-        </div>
+        </x-alert>
     @endif
-    <div class="user-detail-page">
-        <style>
-            .user-detail-page {
-                color: #182230;
-            }
 
-            .detail-heading {
-                margin-bottom: 24px;
-            }
-
-            .detail-heading h1 {
-                font-size: 25px;
-                font-weight: 750;
-                margin: 0 0 7px;
-            }
-
-            .detail-heading p {
-                color: #778399;
-                font-size: 14px;
-                margin: 0;
-            }
-
-            .detail-card {
-                background: #fff;
-                border: 1px solid #e9edf4;
-                border-radius: 16px;
-                padding: 26px;
-                margin-bottom: 20px;
-            }
-
-            .detail-identity {
-                display: flex;
-                align-items: center;
-                gap: 18px;
-                padding-bottom: 24px;
-                border-bottom: 1px solid #edf0f5;
-                margin-bottom: 24px;
-            }
-
-            .detail-avatar {
-                width: 66px;
-                height: 66px;
-                flex-shrink: 0;
-                display: grid;
-                place-items: center;
-                border-radius: 18px;
-                background: #edf1ff;
-                color: #315cf5;
-                font-size: 26px;
-                font-weight: 750;
-            }
-
-            .detail-identity h2 {
-                font-size: 20px;
-                margin: 0 0 6px;
-                font-weight: 750;
-            }
-
-            .detail-identity p {
-                color: #778399;
-                margin: 0;
-                font-size: 13px;
-            }
-
-            .detail-grid {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 22px;
-            }
-
-            .detail-field label {
-                display: block;
-                color: #778399;
-                font-size: 12px;
-                margin-bottom: 8px;
-            }
-
-            .detail-field div {
-                font-size: 14px;
-                font-weight: 650;
-                overflow-wrap: anywhere;
-            }
-
-            .detail-role {
-                display: inline-block;
-                background: #e7f8ef;
-                color: #18794e;
-                border-radius: 20px;
-                padding: 6px 11px;
-                font-size: 12px;
-                font-weight: 700;
-            }
-
-            .detail-role.admin {
-                background: #f0eaff;
-                color: #7041c6;
-            }
-
-            .detail-role.moderator {
-                background: #fff4df;
-                color: #9b6700;
-            }
-
-            .detail-actions {
-                display: flex;
-                gap: 10px;
-                flex-wrap: wrap;
-                margin-top: 24px;
-            }
-
-            .detail-btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                padding: 11px 16px;
-                border-radius: 9px;
-                background: #315cf5;
-                color: white;
-                text-decoration: none;
-                font-size: 13px;
-                font-weight: 700;
-            }
-
-            .detail-btn.secondary {
-                background: #f1f4f9;
-                color: #445066;
-            }
-
-            @media (max-width: 600px) {
-                .detail-card {
-                    padding: 20px;
-                }
-
-                .detail-grid {
-                    grid-template-columns: 1fr;
-                    gap: 18px;
-                }
-
-                .detail-identity {
-                    align-items: flex-start;
-                }
-            }
-
-            .role-settings {
-                margin-top: 28px;
-                padding: 22px;
-                border: 1px solid #e9edf4;
-                border-radius: 14px;
-                background: #f8f9fc;
-            }
-
-            .role-settings-heading {
-                display: flex;
-                align-items: flex-start;
-                gap: 12px;
-                margin-bottom: 22px;
-            }
-
-            .role-settings-icon {
-                width: 40px;
-                height: 40px;
-                flex-shrink: 0;
-                display: grid;
-                place-items: center;
-                border-radius: 11px;
-                background: #edf1ff;
-                color: #315cf5;
-                font-size: 20px;
-            }
-
-            .role-settings-heading h3 {
-                margin: 0 0 6px;
-                font-size: 15px;
-                font-weight: 750;
-            }
-
-            .role-settings-heading p {
-                margin: 0;
-                color: #778399;
-                font-size: 13px;
-                line-height: 1.6;
-            }
-
-            .role-settings-form {
-                display: flex;
-                align-items: flex-end;
-                gap: 14px;
-                flex-wrap: wrap;
-            }
-
-            .role-settings-field {
-                flex: 1;
-                min-width: 180px;
-            }
-
-            .role-settings-field label {
-                display: block;
-                margin-bottom: 8px;
-                color: #536078;
-                font-size: 12px;
-                font-weight: 650;
-            }
-
-            .role-settings-field select {
-                width: 100%;
-                padding: 12px;
-                border: 1px solid #e0e6ef;
-                border-radius: 9px;
-                background: #fff;
-                color: #182230;
-                font: inherit;
-            }
-
-            .role-settings-form .detail-btn {
-                border: none;
-                cursor: pointer;
-            }
-
-            @media (max-width: 520px) {
-                .role-settings-form {
-                    align-items: stretch;
-                    flex-direction: column;
-                }
-
-                .role-settings-form .detail-btn {
-                    width: 100%;
-                }
-            }
-        </style>
-
-        <div class="detail-heading">
-            <h1>Detail Pengguna</h1>
-            <p>Informasi akun yang terdaftar di sistem WASPADA.</p>
-        </div>
-
-        <div class="detail-card">
-            <div class="detail-identity">
-                <div class="detail-avatar">
-                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                </div>
-
-                <div>
-                    <h2>{{ $user->name }}</h2>
-                    <p>{{ $user->email }}</p>
-                </div>
-            </div>
-
-            <div class="detail-grid">
-                <div class="detail-field">
-                    <label>ID Pengguna</label>
-                    <div>#{{ $user->id }}</div>
-                </div>
-
-                <div class="detail-field">
-                    <label>Role</label>
-                    <div>
-                        <span class="detail-role {{ $user->role }}">
-                            {{ ucfirst($user->role) }}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="detail-field">
-                    <label>Tanggal Registrasi</label>
-                    <div>
-                        {{ $user->created_at?->format('d F Y, H:i') ?? '—' }}
-                    </div>
-                </div>
-
-                <div class="detail-field">
-                    <label>Terakhir Diperbarui</label>
-                    <div>
-                        {{ $user->updated_at?->format('d F Y, H:i') ?? '—' }}
-                    </div>
-                </div>
-            </div>
-
-
-            @if (auth()->id() !== $user->id)
-                <div class="role-settings">
-                    <div class="role-settings-heading">
-                        <div class="role-settings-icon">♙</div>
-
-                        <div>
-                            <h3>Pengaturan Hak Akses</h3>
-                            <p>
-                                Ubah tingkat akses akun sesuai tanggung jawab pengguna.
-                            </p>
-                        </div>
-                    </div>
-
-                    <form action="{{ route('admin.users.role.update', $user) }}" method="POST" class="role-settings-form">
-                        @csrf
-                        @method('PATCH')
-
-                        <div class="role-settings-field">
-                            <label for="role">Role Baru</label>
-
-                            <select name="role" id="role" required>
-                                <option value="user" @selected($user->role === 'user')>
-                                    User
-                                </option>
-                                <option value="moderator" @selected($user->role === 'moderator')>
-                                    Moderator
-                                </option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="detail-btn"
-                            onclick="return confirm('Yakin ingin mengubah role pengguna ini?')">
-                            Simpan Perubahan
-                        </button>
-                    </form>
-                </div>
-            @endif
-
-
-            <div class="detail-actions">
-                <a href="{{ route('admin.users.index') }}" class="detail-btn secondary">
-                    ← Kembali ke Daftar
-                </a>
-            </div>
-        </div>
+    {{-- Back Link --}}
+    <div>
+        <x-button variant="outline" size="sm" href="{{ route('admin.users.index') }}">
+            ← Kembali ke Daftar Pengguna
+        </x-button>
     </div>
+
+    {{-- Main Detail Card --}}
+    <x-card variant="elevated">
+        
+        {{-- Profile Header --}}
+        <div class="flex items-center gap-4 pb-6 border-b border-slate-200 dark:border-[#1a3328]">
+            <div class="h-14 w-14 rounded-2xl bg-[#c9f28a]/20 border border-[#c9f28a]/40 text-[#0b1411] dark:text-[#c9f28a] font-extrabold text-xl flex items-center justify-center uppercase">
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                    {{ $user->name }}
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-400 dark:text-[#7b9c8e]">
+                    {{ $user->email }}
+                </p>
+            </div>
+        </div>
+
+        {{-- Meta Grid --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 border-b border-slate-200 dark:border-[#1a3328] text-xs sm:text-sm">
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-[#1c3629] bg-slate-50/50 dark:bg-[#0c1813]">
+                <div class="text-[11px] font-mono uppercase text-slate-400 dark:text-[#6a8d7e] mb-1">ID Pengguna</div>
+                <div class="font-bold font-mono text-slate-800 dark:text-white">#USER-{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-[#1c3629] bg-slate-50/50 dark:bg-[#0c1813]">
+                <div class="text-[11px] font-mono uppercase text-slate-400 dark:text-[#6a8d7e] mb-1">Role Akun Saat Ini</div>
+                <div>
+                    <x-badge :variant="$user->role === 'admin' ? 'lime' : ($user->role === 'moderator' ? 'alert' : 'default')">
+                        {{ ucfirst($user->role) }}
+                    </x-badge>
+                </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-[#1c3629] bg-slate-50/50 dark:bg-[#0c1813]">
+                <div class="text-[11px] font-mono uppercase text-slate-400 dark:text-[#6a8d7e] mb-1">Tanggal Registrasi</div>
+                <div class="font-mono text-slate-800 dark:text-white">{{ $user->created_at?->format('d F Y, H:i') ?? '—' }}</div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-[#1c3629] bg-slate-50/50 dark:bg-[#0c1813]">
+                <div class="text-[11px] font-mono uppercase text-slate-400 dark:text-[#6a8d7e] mb-1">Terakhir Diperbarui</div>
+                <div class="font-mono text-slate-800 dark:text-white">{{ $user->updated_at?->format('d F Y, H:i') ?? '—' }}</div>
+            </div>
+        </div>
+
+        {{-- Role Update Action --}}
+        @if (auth()->id() !== $user->id)
+            <div class="pt-6">
+                <div class="mb-4">
+                    <h2 class="text-sm font-bold text-slate-900 dark:text-white">
+                        Pengaturan Hak Akses Pengguna
+                    </h2>
+                    <p class="text-xs text-slate-400 dark:text-[#769b8c] mt-0.5">
+                        Tingkatkan atau turunkan izin pengguna ini di dalam platform WASPADA.
+                    </p>
+                </div>
+
+                <form action="{{ route('admin.users.role.update', $user) }}" method="POST" class="flex flex-col sm:flex-row items-end gap-3 max-w-lg">
+                    @csrf
+                    @method('PATCH')
+
+                    <div class="w-full sm:flex-1">
+                        <label for="role" class="block text-[11px] font-mono uppercase text-slate-500 dark:text-[#7c9e8f] mb-1.5 font-bold">
+                            Pilih Role Baru
+                        </label>
+                        <select name="role" id="role" required
+                                class="w-full rounded-xl border border-slate-200 dark:border-[#1e382c] bg-white dark:bg-[#09130e] px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white focus:border-[#c9f28a] focus:outline-none transition">
+                            <option value="user" @selected($user->role === 'user')>User Biasa</option>
+                            <option value="moderator" @selected($user->role === 'moderator')>Moderator</option>
+                        </select>
+                    </div>
+
+                    <x-button variant="lime" type="submit" onclick="return confirm('Yakin ingin mengubah hak akses pengguna ini?')">
+                        Simpan Perubahan
+                    </x-button>
+                </form>
+            </div>
+        @else
+            <div class="pt-6 text-xs text-slate-400 dark:text-[#69897c] italic">
+                * Anda sedang melihat profil Anda sendiri sebagai Administrator utama.
+            </div>
+        @endif
+
+    </x-card>
+
+</div>
 @endsection

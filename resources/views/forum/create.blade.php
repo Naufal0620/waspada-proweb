@@ -1,132 +1,36 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Diskusi — WASPADA</title>
+@extends('layouts.app')
 
-    <style>
-        * { box-sizing: border-box; }
+@section('title', 'Buat Diskusi Baru — WASPADA')
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f7f9fc;
-            color: #172033;
-        }
+@section('content')
+<div class="py-10 max-w-3xl mx-auto px-4 sm:px-6">
 
-        .container {
-            width: min(760px, 92%);
-            margin: 40px auto;
-        }
+    <div class="mb-6">
+        <x-button variant="outline" size="sm" href="{{ route('forum.index') }}">
+            ← Kembali ke Forum
+        </x-button>
+    </div>
 
-        .card {
-            background: white;
-            border: 1px solid #e5eaf1;
-            border-radius: 16px;
-            padding: 28px;
-        }
+    <x-card variant="elevated">
+        <x-badge variant="lime" class="mb-3">
+            KONTRIBUSI KOMUNITAS
+        </x-badge>
+        
+        <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
+            Bagikan Pengalaman / Modus Baru
+        </h1>
+        <p class="text-xs sm:text-sm text-[#8ba89b] mb-8 leading-relaxed">
+            Pengalaman yang Anda bagikan dapat menjadi penyelamat orang lain dari jebakan penipuan digital.
+        </p>
 
-        h1 { margin-top: 0; }
+        <form action="{{ route('forum.store') }}" method="POST" class="space-y-6">
+            @csrf
 
-        .description {
-            color: #647087;
-            line-height: 1.7;
-        }
-
-        label {
-            display: block;
-            font-weight: 700;
-            margin: 20px 0 8px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d8dfeb;
-            border-radius: 9px;
-            font: inherit;
-        }
-
-        textarea {
-            min-height: 180px;
-            resize: vertical;
-        }
-
-        .hint {
-            color: #778196;
-            font-size: 13px;
-            margin-top: 7px;
-        }
-
-        .error {
-            color: #c62828;
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        .notice {
-            background: #fff8e7;
-            border: 1px solid #f4e3b1;
-            border-radius: 10px;
-            padding: 14px;
-            margin-top: 20px;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-
-        button, .back {
-            padding: 12px 16px;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        button {
-            background: #155eef;
-            color: white;
-            border: none;
-        }
-
-        .back {
-            background: white;
-            color: #364258;
-            border: 1px solid #d8dfeb;
-        }
-
-        @media (max-width: 500px) {
-            .card { padding: 20px; }
-        }
-    </style>
-</head>
-
-<body>
-    <main class="container">
-        <a class="back" href="{{ route('forum.index') }}">
-            ← Kembali ke forum
-        </a>
-
-        <section class="card" style="margin-top: 20px;">
-            <h1>Buat Diskusi</h1>
-
-            <p class="description">
-                Bagikan pengalaman atau informasi yang dapat membantu
-                komunitas mengenali risiko penipuan.
-            </p>
-
-            <form action="{{ route('forum.store') }}" method="POST">
-                @csrf
-
-                <label for="title">Judul diskusi</label>
+            {{-- Title Input --}}
+            <div>
+                <label for="title" class="block text-xs font-mono font-bold uppercase tracking-wider text-[#a0c5b5] mb-2">
+                    Judul Diskusi
+                </label>
                 <input
                     id="title"
                     name="title"
@@ -135,60 +39,74 @@
                     minlength="10"
                     required
                     value="{{ old('title') }}"
-                    placeholder="Contoh: Tawaran kerja meminta biaya pendaftaran"
+                    placeholder="Contoh: Modus tawaran kerja paruh waktu via Telegram meminta deposit"
+                    class="w-full rounded-xl border border-[#1e382c] bg-[#0c1813] px-4 py-3 text-sm text-white placeholder:text-[#526f62] focus:border-[#c9f28a] focus:outline-none focus:ring-1 focus:ring-[#c9f28a] transition"
                 >
                 @error('title')
-                    <p class="error">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs text-rose-400">{{ $message }}</p>
                 @enderror
+            </div>
 
-                <label for="category_id">Kategori</label>
-                <select id="category_id" name="category_id" required>
-                    <option value="">Pilih kategori</option>
-
+            {{-- Category Select --}}
+            <div>
+                <label for="category_id" class="block text-xs font-mono font-bold uppercase tracking-wider text-[#a0c5b5] mb-2">
+                    Kategori Pola
+                </label>
+                <select id="category_id" 
+                        name="category_id" 
+                        required
+                        class="w-full rounded-xl border border-[#1e382c] bg-[#0c1813] px-4 py-3 text-sm text-[#d0e2d9] focus:border-[#c9f28a] focus:outline-none focus:ring-1 focus:ring-[#c9f28a] transition">
+                    <option value="">Pilih kategori yang sesuai...</option>
                     @foreach ($categories as $category)
-                        <option
-                            value="{{ $category->id }}"
-                            @selected(old('category_id') == $category->id)
-                        >
+                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
                             {{ $category->name }}
                         </option>
                     @endforeach
                 </select>
                 @error('category_id')
-                    <p class="error">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs text-rose-400">{{ $message }}</p>
                 @enderror
+            </div>
 
-                <label for="body">Isi diskusi</label>
+            {{-- Body Content --}}
+            <div>
+                <label for="body" class="block text-xs font-mono font-bold uppercase tracking-wider text-[#a0c5b5] mb-2">
+                    Kronologi & Informasi Penting
+                </label>
                 <textarea
                     id="body"
                     name="body"
+                    rows="8"
                     minlength="30"
                     maxlength="10000"
                     required
-                    placeholder="Ceritakan situasinya, tanda-tanda yang kamu temukan, dan hal yang perlu diwaspadai."
+                    placeholder="Ceritakan detail situasinya: bagaimana mereka menghubungi, syarat mencurigakan apa yang diajukan, nomor rekening/kontak (sensor data pribadi), serta saran pencegahan..."
+                    class="w-full rounded-xl border border-[#1e382c] bg-[#0c1813] px-4 py-3 text-sm text-white placeholder:text-[#526f62] focus:border-[#c9f28a] focus:outline-none focus:ring-1 focus:ring-[#c9f28a] transition resize-y leading-relaxed"
                 >{{ old('body') }}</textarea>
-                <p class="hint">
-                    Minimal 30 karakter. Jangan tuliskan kata sandi,
-                    PIN, kode OTP, alamat rumah, atau data pribadi orang lain.
-                </p>
+                <div class="mt-2 text-[11px] text-[#6d8d7e]">
+                    Minimal 30 karakter. Demi keamanan, jangan mempublikasikan nomor KTP, foto selfie pribadi, kata sandi, atau kode OTP Anda.
+                </div>
                 @error('body')
-                    <p class="error">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs text-rose-400">{{ $message }}</p>
                 @enderror
+            </div>
 
-                <div class="notice">
-                    Diskusi akan ditinjau moderator sebelum diterbitkan.
-                    Sampaikan pengalaman secara faktual dan hindari
-                    tuduhan yang belum dapat diverifikasi.
-                </div>
+            {{-- Moderation Notice --}}
+            <x-alert type="warning">
+                <strong>Ketentuan Moderasi:</strong> Laporan atau diskusi akan melalui tinjauan moderator sebelum terbit untuk menyaring konten hoax, fitnah tanpa dasar, maupun pelanggaran privasi.
+            </x-alert>
 
-                <div class="actions">
-                    <button type="submit">Kirim untuk Ditinjau</button>
-                    <a class="back" href="{{ route('forum.index') }}">
-                        Batal
-                    </a>
-                </div>
-            </form>
-        </section>
-    </main>
-</body>
-</html>
+            {{-- Action Buttons --}}
+            <div class="flex items-center gap-4 pt-2">
+                <x-button variant="lime" type="submit">
+                    Kirim untuk Ditinjau Moderator
+                </x-button>
+                <x-button variant="outline" href="{{ route('forum.index') }}">
+                    Batal
+                </x-button>
+            </div>
+        </form>
+    </x-card>
+
+</div>
+@endsection

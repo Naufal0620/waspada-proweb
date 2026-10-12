@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Pengguna')
@@ -7,265 +6,120 @@
 @php($activeMenu = 'users')
 
 @section('content')
-<div class="users-page">
-    <style>
-        .users-page { color: #182230; }
-        .users-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .users-header h1 {
-            font-size: 25px;
-            font-weight: 750;
-            margin: 0 0 7px;
-        }
-        .users-header p {
-            margin: 0;
-            color: #778399;
-            font-size: 14px;
-        }
-        .users-count {
-            background: #edf1ff;
-            color: #315cf5;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .users-card {
-            background: #fff;
-            border: 1px solid #e9edf4;
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        .users-filters {
-            display: flex;
-            gap: 12px;
-            padding: 20px;
-            border-bottom: 1px solid #e9edf4;
-        }
-        .users-filters input,
-        .users-filters select {
-            min-width: 0;
-            padding: 11px 13px;
-            border: 1px solid #e0e6ef;
-            border-radius: 9px;
-            background: #fff;
-            color: #182230;
-            font: inherit;
-        }
-        .users-filters input { flex: 1; }
-        .users-btn {
-            padding: 11px 16px;
-            border: 0;
-            border-radius: 9px;
-            background: #315cf5;
-            color: white;
-            font-weight: 650;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .users-btn-secondary {
-            background: #f1f4f9;
-            color: #445066;
-        }
-        .users-table-wrap { overflow-x: auto; }
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
-        .users-table th {
-            background: #f8f9fc;
-            color: #778399;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            font-weight: 700;
-        }
-        .users-table th,
-        .users-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid #edf0f5;
-        }
-        .users-table td { font-size: 13px; }
-        .users-table tbody tr:last-child td { border-bottom: 0; }
-        .users-identity {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .users-avatar {
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            border-radius: 12px;
-            background: #edf1ff;
-            color: #315cf5;
-            font-weight: 750;
-        }
-        .users-name { font-weight: 700; margin-bottom: 4px; }
-        .users-email { color: #778399; font-size: 12px; }
-        .users-role {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            background: #f1f4f9;
-            color: #536078;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .users-role-admin { background: #f0eaff; color: #7041c6; }
-        .users-role-moderator { background: #fff4df; color: #9b6700; }
-        .users-role-user { background: #e7f8ef; color: #18794e; }
-        .users-action { color: #315cf5; font-weight: 700; text-decoration: none; }
-        .users-empty {
-            padding: 42px 20px;
-            text-align: center;
-            color: #778399;
-        }
-        .users-footer {
-            padding: 16px 20px;
-            border-top: 1px solid #e9edf4;
-        }
-        .users-footer nav p { margin: 0; }
-        .users-footer nav div { display: flex; gap: 5px; flex-wrap: wrap; }
-        .users-footer nav a,
-        .users-footer nav span {
-            display: inline-block;
-            padding: 7px 11px;
-            border: 1px solid #e0e6ef;
-            border-radius: 7px;
-            font-size: 12px;
-            text-decoration: none;
-        }
-        .users-footer nav span[aria-current="page"] span {
-            background: #315cf5;
-            color: white;
-            border-color: #315cf5;
-        }
-        @media (max-width: 650px) {
-            .users-header { flex-direction: column; }
-            .users-filters { flex-direction: column; }
-            .users-filters select,
-            .users-filters .users-btn { width: 100%; }
-        }
-    </style>
+<div class="space-y-6">
 
-    <div class="users-header">
+    {{-- Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1>Manajemen Pengguna</h1>
-            <p>Lihat dan telusuri akun yang terdaftar di WASPADA.</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Manajemen Pengguna
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-[#8ba79b] mt-1">
+                Kelola hak akses dan telusuri profil pengguna platform WASPADA.
+            </p>
         </div>
 
-        <div class="users-count">
-            {{ $users->total() }} pengguna
-        </div>
+        <x-badge variant="lime">
+            {{ $users->total() }} Pengguna Terdaftar
+        </x-badge>
     </div>
 
-    <div class="users-card">
-        <form method="GET"
-              action="{{ route('admin.users.index') }}"
-              class="users-filters">
-
+    {{-- Table Container --}}
+    <x-card class="p-0 overflow-hidden">
+        
+        {{-- Search & Filter Toolbar --}}
+        <form method="GET" action="{{ route('admin.users.index') }}" 
+              class="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1c3629] flex flex-col sm:flex-row gap-3 bg-slate-50/50 dark:bg-[#0c1813]/60">
+            
             <input
                 type="search"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="Cari nama atau email..."
-                aria-label="Cari nama atau email">
+                placeholder="Cari nama atau email pengguna..."
+                class="flex-1 rounded-xl border border-slate-200 dark:border-[#1e382c] bg-white dark:bg-[#09130e] px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#527063] focus:border-[#c9f28a] focus:outline-none transition"
+            >
 
-            <select name="role" aria-label="Filter role">
-                <option value="">Semua role</option>
-                <option value="user" @selected(request('role') === 'user')>
-                    User
-                </option>
-                <option value="moderator" @selected(request('role') === 'moderator')>
-                    Moderator
-                </option>
-                <option value="admin" @selected(request('role') === 'admin')>
-                    Admin
-                </option>
+            <select name="role" 
+                    class="rounded-xl border border-slate-200 dark:border-[#1e382c] bg-white dark:bg-[#09130e] px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white focus:border-[#c9f28a] focus:outline-none transition">
+                <option value="">Semua Role</option>
+                <option value="user" @selected(request('role') === 'user')>User Biasa</option>
+                <option value="moderator" @selected(request('role') === 'moderator')>Moderator</option>
+                <option value="admin" @selected(request('role') === 'admin')>Administrator</option>
             </select>
 
-            <button class="users-btn" type="submit">Cari</button>
+            <x-button variant="lime" size="sm" type="submit">
+                Filter
+            </x-button>
 
             @if(request()->hasAny(['search', 'role']))
-                <a href="{{ route('admin.users.index') }}"
-                   class="users-btn users-btn-secondary">
+                <x-button variant="outline" size="sm" href="{{ route('admin.users.index') }}">
                     Reset
-                </a>
+                </x-button>
             @endif
         </form>
 
-        <div class="users-table-wrap">
-            <table class="users-table">
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                    <tr>
-                        <th>Pengguna</th>
-                        <th>Role</th>
-                        <th>Terdaftar</th>
-                        <th>Aksi</th>
+                    <tr class="border-b border-slate-200 dark:border-[#1a3328] bg-slate-100/60 dark:bg-[#0c1813] text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-[#769b8b]">
+                        <th class="py-3.5 px-6">Identitas Pengguna</th>
+                        <th class="py-3.5 px-6">Role Akses</th>
+                        <th class="py-3.5 px-6">Tanggal Bergabung</th>
+                        <th class="py-3.5 px-6 text-right">Tindakan</th>
                     </tr>
                 </thead>
-
-                <tbody>
+                <tbody class="divide-y divide-slate-100 dark:divide-[#172c21]">
                     @forelse($users as $user)
-                        <tr>
-                            <td>
-                                <div class="users-identity">
-                                    <div class="users-avatar">
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-[#12241c]/50 transition">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-9 w-9 rounded-xl bg-[#c9f28a]/20 border border-[#c9f28a]/40 text-[#0b1411] dark:text-[#c9f28a] font-bold text-xs flex items-center justify-center uppercase flex-shrink-0">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
-
                                     <div>
-                                        <div class="users-name">
+                                        <div class="font-bold text-slate-900 dark:text-white leading-tight">
                                             {{ $user->name }}
                                         </div>
-                                        <div class="users-email">
+                                        <div class="text-[11px] text-slate-400 dark:text-[#6d8d7e]">
                                             {{ $user->email }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
 
-                            <td>
-                                <span class="users-role
-                                    {{ $user->role === 'admin' ? 'users-role-admin' : '' }}
-                                    {{ $user->role === 'moderator' ? 'users-role-moderator' : '' }}
-                                    {{ $user->role === 'user' ? 'users-role-user' : '' }}">
-                                    {{ ucfirst($user->role) }}
-                                </span>
+                            <td class="py-4 px-6">
+                                @if($user->role === 'admin')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/30">
+                                        ADMIN
+                                    </span>
+                                @elseif($user->role === 'moderator')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 border border-amber-500/30">
+                                        MODERATOR
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-500/10 text-slate-600 dark:text-[#90aba0] border border-slate-300 dark:border-[#213d30]">
+                                        USER
+                                    </span>
+                                @endif
                             </td>
 
-                            <td>
+                            <td class="py-4 px-6 text-slate-500 dark:text-[#7f9e90] font-mono text-xs">
                                 {{ $user->created_at?->format('d M Y') ?? '—' }}
                             </td>
 
-                            <td>
-                                <a class="users-action"
-                                   href="{{ route('admin.users.show', $user) }}">
-                                    Detail →
+                            <td class="py-4 px-6 text-right">
+                                <a href="{{ route('admin.users.show', $user) }}" 
+                                   class="inline-flex items-center gap-1 font-bold text-xs text-[#059669] dark:text-[#c9f28a] hover:underline">
+                                    <span>Detail Role</span>
+                                    <span>→</span>
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4">
-                                <div class="users-empty">
-                                    <strong>Tidak ada pengguna ditemukan</strong>
-                                    <p>Coba ubah kata kunci atau filter role.</p>
-                                </div>
+                            <td colspan="4" class="py-12 text-center text-xs text-slate-400 dark:text-[#6e8a7d]">
+                                Tidak ada akun pengguna yang sesuai dengan filter pencarian.
                             </td>
                         </tr>
                     @endforelse
@@ -274,10 +128,12 @@
         </div>
 
         @if($users->hasPages())
-            <div class="users-footer">
+            <div class="p-4 border-t border-slate-200 dark:border-[#1a3328]">
                 {{ $users->links() }}
             </div>
         @endif
-    </div>
+
+    </x-card>
+
 </div>
 @endsection
