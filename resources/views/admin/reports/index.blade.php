@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 
 @section('title', 'Laporan Diskusi')
@@ -6,393 +5,115 @@
 
 @php($activeMenu = 'reports')
 
-@push('styles')
-<style>
-    .reports-page {
-        color: #182230;
-    }
-
-    .reports-heading {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 16px;
-        margin-bottom: 26px;
-    }
-
-    .reports-title {
-        margin: 0 0 7px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 25px;
-        font-weight: 800;
-        letter-spacing: -.6px;
-    }
-
-    .reports-description {
-        margin: 0;
-        color: #778399;
-        line-height: 1.7;
-    }
-
-    .reports-count {
-        flex-shrink: 0;
-        padding: 9px 13px;
-        background: #edf1ff;
-        color: #315cf5;
-        border-radius: 9px;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .reports-card {
-        background: #fff;
-        border: 1px solid #e9edf4;
-        border-radius: 15px;
-        box-shadow: 0 4px 18px rgba(25, 42, 80, .035);
-        overflow: hidden;
-    }
-
-    .reports-toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 20px 22px;
-        border-bottom: 1px solid #e9edf4;
-    }
-
-    .reports-toolbar h2 {
-        margin: 0;
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-    .reports-filter {
-        display: flex;
-        gap: 9px;
-    }
-
-    .reports-filter select {
-        min-height: 39px;
-        padding: 8px 32px 8px 11px;
-        border: 1px solid #dce2ed;
-        border-radius: 8px;
-        background: #fff;
-        color: #344054;
-        font: inherit;
-        font-size: 12px;
-    }
-
-    .reports-filter button {
-        padding: 9px 13px;
-        border: 0;
-        border-radius: 8px;
-        background: #315cf5;
-        color: #fff;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .reports-table-wrap {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .reports-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-    }
-
-    .reports-table th {
-        padding: 14px 20px;
-        background: #f9faff;
-        color: #778399;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .7px;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .reports-table td {
-        padding: 17px 20px;
-        border-top: 1px solid #edf0f5;
-        color: #475569;
-        font-size: 12px;
-        vertical-align: middle;
-    }
-
-    .reports-table tbody tr:hover {
-        background: #fbfcff;
-    }
-
-    .report-discussion {
-        display: block;
-        min-width: 170px;
-        max-width: 300px;
-        color: #182230;
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 1.6;
-        overflow-wrap: anywhere;
-    }
-
-    .report-discussion:hover {
-        color: #315cf5;
-    }
-
-    .report-subtext {
-        display: block;
-        margin-top: 5px;
-        color: #98a2b3;
-        font-size: 11px;
-    }
-
-    .report-reason {
-        max-width: 180px;
-        line-height: 1.6;
-        overflow-wrap: anywhere;
-    }
-
-    .report-status {
-        display: inline-flex;
-        padding: 6px 9px;
-        border-radius: 7px;
-        font-size: 10px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .report-status.pending {
-        background: #fff4df;
-        color: #9b6812;
-    }
-
-    .report-status.reviewed {
-        background: #e8efff;
-        color: #3157bc;
-    }
-
-    .report-status.dismissed {
-        background: #f0f2f6;
-        color: #657184;
-    }
-
-    .report-status.actioned {
-        background: #e4f7ee;
-        color: #16845b;
-    }
-
-    .report-action {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 11px;
-        border: 1px solid #dce4ff;
-        border-radius: 8px;
-        background: #f3f5ff;
-        color: #315cf5;
-        font-size: 11px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .report-action:hover {
-        background: #e7ecff;
-    }
-
-    .reports-empty {
-        padding: 45px 20px !important;
-        text-align: center;
-        color: #778399 !important;
-        line-height: 1.8;
-    }
-
-    .reports-pagination {
-        padding: 18px 22px;
-        border-top: 1px solid #e9edf4;
-    }
-
-    .reports-pagination nav p {
-        color: #778399;
-        font-size: 12px;
-    }
-
-    .reports-pagination nav a,
-    .reports-pagination nav span {
-        font-size: 12px;
-    }
-
-    .reports-alert {
-        margin-bottom: 18px;
-        padding: 13px 16px;
-        border: 1px solid #bbf7d0;
-        border-radius: 10px;
-        background: #ecfdf3;
-        color: #166534;
-    }
-
-    @media (max-width: 650px) {
-        .reports-heading,
-        .reports-toolbar {
-            align-items: stretch;
-            flex-direction: column;
-        }
-
-        .reports-title {
-            font-size: 22px;
-        }
-
-        .reports-filter {
-            width: 100%;
-        }
-
-        .reports-filter select {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .reports-count {
-            align-self: flex-start;
-        }
-    }
-</style>
-@endpush
-
 @section('content')
-<div class="reports-page">
+<div class="space-y-6">
 
-    <div class="reports-heading">
+    {{-- Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="reports-title">Laporan Diskusi</h1>
-            <p class="reports-description">
-                Tinjau laporan pengguna dan pantau tindak lanjut diskusi
-                dari panel administrasi.
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Laporan Diskusi
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-[#8ba79b] mt-1">
+                Tinjau laporan pengguna dan kelola tindak lanjut konten forum dari panel admin.
             </p>
         </div>
 
-        <div class="reports-count">
-            {{ $reports->total() }} laporan
+        <div class="self-start sm:self-auto px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-[#203a2e] bg-white dark:bg-[#12221b] text-xs font-mono text-slate-600 dark:text-[#a0c5b5] shadow-sm">
+            Total Laporan: <span class="font-bold text-[#15803d] dark:text-[#c9f28a]">{{ $reports->total() }}</span>
         </div>
     </div>
 
     @if (session('success'))
-        <div class="reports-alert" role="status">
+        <x-alert type="success">
             {{ session('success') }}
-        </div>
+        </x-alert>
     @endif
 
-    <section class="reports-card">
-        <div class="reports-toolbar">
-            <h2>Semua Laporan</h2>
+    {{-- Table Card --}}
+    <x-card class="!p-0 overflow-hidden">
+        {{-- Toolbar --}}
+        <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-[#1e382d] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50 dark:bg-[#0c1813]/60">
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                Daftar Laporan Masuk
+            </h2>
 
-            <form
-                action="{{ route('admin.reports.index') }}"
-                method="GET"
-                class="reports-filter"
-            >
-                <select name="status" aria-label="Filter status laporan">
-                    <option value="">Semua status</option>
-                    <option value="pending"
-                        @selected(request('status') === 'pending')>
-                        Menunggu
-                    </option>
-                    <option value="reviewed"
-                        @selected(request('status') === 'reviewed')>
-                        Ditinjau
-                    </option>
-                    <option value="dismissed"
-                        @selected(request('status') === 'dismissed')>
-                        Ditolak
-                    </option>
-                    <option value="actioned"
-                        @selected(request('status') === 'actioned')>
-                        Ditindaklanjuti
-                    </option>
+            <form action="{{ route('admin.reports.index') }}" method="GET" class="flex items-center gap-2">
+                <select name="status" 
+                        aria-label="Filter status laporan"
+                        class="text-xs rounded-xl border border-slate-200 dark:border-[#224032] bg-white dark:bg-[#102018] text-slate-800 dark:text-white px-3 py-2 focus:outline-none focus:border-[#c9f28a]">
+                    <option value="">Semua Status</option>
+                    <option value="pending" @selected(request('status') === 'pending')>Menunggu</option>
+                    <option value="reviewed" @selected(request('status') === 'reviewed')>Ditinjau</option>
+                    <option value="dismissed" @selected(request('status') === 'dismissed')>Ditolak</option>
+                    <option value="actioned" @selected(request('status') === 'actioned')>Ditindaklanjuti</option>
                 </select>
 
-                <button type="submit">Filter</button>
+                <x-button variant="lime" type="submit" class="!py-2 !px-3 !text-xs">
+                    Filter
+                </x-button>
             </form>
         </div>
 
-        <div class="reports-table-wrap">
-            <table class="reports-table">
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
                 <thead>
-                    <tr>
-                        <th>Laporan</th>
-                        <th>Pelapor</th>
-                        <th>Alasan</th>
-                        <th>Status</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
+                    <tr class="border-b border-slate-200 dark:border-[#1a3328] bg-slate-50 dark:bg-[#0e1d17] text-slate-500 dark:text-[#789a8b] font-mono text-[11px] uppercase tracking-wider">
+                        <th class="py-3 px-4 sm:px-6">Laporan & Diskusi</th>
+                        <th class="py-3 px-4">Pelapor</th>
+                        <th class="py-3 px-4">Alasan</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4">Waktu</th>
+                        <th class="py-3 px-4 sm:px-6 text-right">Aksi</th>
                     </tr>
                 </thead>
-
-                <tbody>
+                <tbody class="divide-y divide-slate-100 dark:divide-[#172c21]">
                     @forelse ($reports as $report)
-                        <tr>
-                            <td>
-                                <a
-                                    href="{{ route('admin.reports.show', $report->id) }}"
-                                    class="report-discussion"
-                                >
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-[#12221b]/60 transition">
+                            <td class="py-3.5 px-4 sm:px-6 max-w-xs">
+                                <a href="{{ route('admin.reports.show', $report->id) }}" class="font-bold text-slate-900 dark:text-white hover:text-[#15803d] dark:hover:text-[#c9f28a] transition line-clamp-1">
                                     {{ $report->discussion?->title ?? 'Diskusi tidak tersedia' }}
                                 </a>
-
-                                <span class="report-subtext">
+                                <span class="text-[10px] font-mono text-slate-400 dark:text-[#5d7c6f]">
                                     Laporan #{{ $report->id }}
                                 </span>
                             </td>
 
-                            <td>
+                            <td class="py-3.5 px-4 text-slate-700 dark:text-slate-300">
                                 {{ $report->reporter?->name ?? 'Pengguna tidak tersedia' }}
                             </td>
 
-                            <td>
-                                <div class="report-reason">
-                                    {{ $report->reason }}
-                                </div>
+                            <td class="py-3.5 px-4 max-w-xs text-slate-600 dark:text-[#8ba79b]">
+                                <span class="line-clamp-1">{{ $report->reason }}</span>
                             </td>
 
-                            <td>
-                                <span class="report-status {{ $report->status }}">
-                                    @switch($report->status)
-                                        @case('pending')
-                                            Menunggu
-                                            @break
-                                        @case('reviewed')
-                                            Ditinjau
-                                            @break
-                                        @case('dismissed')
-                                            Ditolak
-                                            @break
-                                        @case('actioned')
-                                            Ditindaklanjuti
-                                            @break
-                                        @default
-                                            {{ ucfirst($report->status) }}
-                                    @endswitch
-                                </span>
+                            <td class="py-3.5 px-4">
+                                <x-badge :variant="$report->status === 'pending' ? 'pending' : ($report->status === 'actioned' ? 'published' : ($report->status === 'reviewed' ? 'default' : 'dismissed'))">
+                                    {{ match($report->status) {
+                                        'pending' => 'Menunggu',
+                                        'reviewed' => 'Ditinjau',
+                                        'dismissed' => 'Ditolak',
+                                        'actioned' => 'Ditindaklanjuti',
+                                        default => ucfirst($report->status),
+                                    } }}
+                                </x-badge>
                             </td>
 
-                            <td>
+                            <td class="py-3.5 px-4 font-mono text-[11px] text-slate-500 dark:text-[#6a8c7e] whitespace-nowrap">
                                 {{ $report->created_at?->format('d/m/Y H:i') ?? '-' }}
                             </td>
 
-                            <td>
-                                <a
-                                    href="{{ route('admin.reports.show', $report->id) }}"
-                                    class="report-action"
-                                >
+                            <td class="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">
+                                <a href="{{ route('admin.reports.show', $report->id) }}" 
+                                   class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-[#234234] bg-white dark:bg-[#12241c] text-slate-700 dark:text-[#a0c5b5] hover:border-[#c9f28a] hover:text-[#15803d] dark:hover:text-[#c9f28a] text-[11px] font-bold transition">
                                     Detail →
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="reports-empty">
+                            <td colspan="6" class="py-12 text-center text-slate-400 dark:text-[#6a8c7e]">
                                 Belum ada laporan yang sesuai dengan filter.
                             </td>
                         </tr>
@@ -402,10 +123,11 @@
         </div>
 
         @if ($reports->hasPages())
-            <div class="reports-pagination">
+            <div class="p-4 border-t border-slate-200 dark:border-[#1a3328]">
                 {{ $reports->links() }}
             </div>
         @endif
-    </section>
+    </x-card>
+
 </div>
 @endsection

@@ -67,27 +67,27 @@
                     @auth
                         <div class="flex items-center gap-3">
                             @if(auth()->user()->role === 'admin')
-                                <a href="{{ route('admin.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#14231e] border border-[#233b31] text-[#c9f28a] hover:bg-[#1a2d26] transition">
+                                <a href="{{ route('admin.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-[#14231e] border border-emerald-200 dark:border-[#233b31] text-emerald-800 dark:text-[#c9f28a] hover:bg-emerald-100 dark:hover:bg-[#1a2d26] transition font-semibold shadow-sm">
                                     Panel Admin
                                 </a>
                             @elseif(in_array(auth()->user()->role, ['moderator', 'admin']))
-                                <a href="{{ route('moderator.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#14231e] border border-[#233b31] text-[#c9f28a] hover:bg-[#1a2d26] transition">
+                                <a href="{{ route('moderator.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-[#14231e] border border-emerald-200 dark:border-[#233b31] text-emerald-800 dark:text-[#c9f28a] hover:bg-emerald-100 dark:hover:bg-[#1a2d26] transition font-semibold shadow-sm">
                                     Panel Mod
                                 </a>
                             @endif
 
-                            <div class="flex items-center gap-2 pl-3 border-l border-[#1c2c26]">
-                                <div class="h-8 w-8 rounded-full bg-[#c9f28a] text-[#0b1411] font-bold text-xs flex items-center justify-center uppercase">
+                            <div class="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-[#1c2c26]">
+                                <div class="h-8 w-8 rounded-full bg-[#c9f28a] text-[#0b1411] font-bold text-xs flex items-center justify-center uppercase shadow-sm">
                                     {{ substr(auth()->user()->name, 0, 1) }}
                                 </div>
-                                <span class="hidden sm:inline-block text-xs font-medium text-[#c4d6cd]">
+                                <span class="hidden sm:inline-block text-xs font-semibold text-slate-800 dark:text-[#c4d6cd]">
                                     {{ auth()->user()->name }}
                                 </span>
                             </div>
 
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="text-xs text-[#788e83] hover:text-rose-400 p-1.5 transition" title="Logout">
+                                <button type="submit" class="text-xs text-slate-400 dark:text-[#788e83] hover:text-rose-500 dark:hover:text-rose-400 p-1.5 transition" title="Logout">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                     </svg>
@@ -133,9 +133,9 @@
                     <p class="text-slate-500 dark:text-[#71877c] max-w-sm leading-relaxed mb-6">
                         Sistem deteksi dini penipuan online, pinjaman ilegal, dan perlindungan privasi digital berbasis pencocokan pola risiko komunitas.
                     </p>
-                    <div class="inline-flex items-center gap-2 rounded-full border border-emerald-300 dark:border-[#1f382e] bg-emerald-50 dark:bg-[#0c1813] px-3 py-1 font-mono text-[11px] text-emerald-800 dark:text-[#c9f28a]">
-                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-600 dark:bg-[#c9f28a] animate-pulse"></span>
-                        SYSTEM ONLINE & SECURE
+                    <div class="inline-flex items-center gap-2 rounded-full border border-emerald-300 dark:border-[#1f382e] bg-emerald-50 dark:bg-[#0c1813] px-3 h-7 font-mono text-[11px] text-emerald-800 dark:text-[#c9f28a] leading-none">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-600 dark:bg-[#c9f28a] animate-pulse flex-shrink-0"></span>
+                        <span class="leading-none flex items-center">SYSTEM ONLINE & SECURE</span>
                     </div>
                 </div>
 

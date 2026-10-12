@@ -38,52 +38,6 @@
              onclick="toggleAdminSidebar(false)"
              class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
-<<<<<<< HEAD
-            <div class="admin-nav-label">Workspace</div>
-
-            <nav class="admin-nav">
-                <a href="{{ route('admin.dashboard') }}"
-                    class="admin-nav-link {{ ($activeMenu ?? '') === 'dashboard' ? 'active' : '' }}">
-                    <span class="admin-nav-icon">▦</span>
-                    Dashboard
-                </a>
-
-                <a href="{{ route('admin.users.index') }}"
-                    class="admin-nav-link {{ ($activeMenu ?? '') === 'users' ? 'active' : '' }}">
-                    <span class="admin-nav-icon">♟</span>
-                    Manajemen Pengguna
-                </a>
-
-
-                <a href="{{ route('admin.reports.index') }}"
-                    class="admin-nav-link {{ ($activeMenu ?? '') === 'reports' ? 'active' : '' }}">
-                    <span class="admin-nav-icon">⚑</span>
-                    Laporan Diskusi
-                </a>
-
-                <a href="{{ route('forum.index') }}"
-                    class="admin-nav-link {{ ($activeMenu ?? '') === 'forum' ? 'active' : '' }}">
-                    <span class="admin-nav-icon">☷</span>
-                    Forum Publik
-                </a>
-
-                {{-- Menu berikutnya ditambahkan saat fitur tersedia. --}}
-            </nav>
-
-            <div class="admin-sidebar-bottom">
-                <div class="admin-sidebar-note">
-                    <strong>⚙️ Administrasi WASPADA</strong>
-                    <p>
-                        Kelola sistem secara bertanggung jawab.
-                        Perubahan akses dan tindakan administratif
-                        harus sesuai kewenangan.
-                    </p>
-                </div>
-
-                <div class="admin-profile">
-                    <div class="admin-avatar">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-=======
         {{-- SIDEBAR --}}
         <aside id="adminSidebar"
                class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out bg-white dark:bg-[#0d1813] border-r border-slate-200 dark:border-[#1a3328] flex flex-col justify-between p-5">
@@ -91,15 +45,14 @@
             <div>
                 {{-- Logo & Brand --}}
                 <div class="flex items-center gap-3 px-2 py-3 mb-8 border-b border-slate-100 dark:border-[#172c21]">
-                    <div class="h-9 w-9 rounded-xl bg-[#14261f] border border-[#234235] p-1.5 flex items-center justify-center">
+                    <div class="h-9 w-9 rounded-xl bg-slate-100 dark:bg-[#14261f] border border-slate-200 dark:border-[#234235] p-1.5 flex items-center justify-center">
                         <img src="{{ asset('images/icon.svg') }}" alt="WASPADA" class="h-6 w-6 object-contain">
->>>>>>> f4e819a (edit desain dikit ajah)
                     </div>
                     <div>
                         <span class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
-                            waspada<span class="h-1.5 w-1.5 rounded-full bg-[#c9f28a]"></span>
+                            waspada<span class="h-1.5 w-1.5 rounded-full bg-[#15803d] dark:bg-[#c9f28a]"></span>
                         </span>
-                        <span class="text-[10px] font-mono tracking-wider uppercase text-[#4d7363]">Admin Workspace</span>
+                        <span class="text-[10px] font-mono tracking-wider uppercase text-slate-500 dark:text-[#4d7363]">Admin Workspace</span>
                     </div>
                 </div>
 
@@ -126,7 +79,7 @@
                         <span>Manajemen Pengguna</span>
                     </a>
 
-                    <a href="{{ route('moderator.reports.index') }}"
+                    <a href="{{ route('admin.reports.index') }}"
                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition {{ ($activeMenu ?? '') === 'reports' ? 'bg-[#c9f28a] text-[#0b1411] shadow-[0_2px_10px_rgba(201,242,138,0.25)]' : 'text-slate-600 dark:text-[#90aba0] hover:bg-slate-100 dark:hover:bg-[#12231c] hover:text-slate-900 dark:hover:text-white' }}">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
@@ -204,9 +157,9 @@
                 <div class="flex items-center gap-3">
                     <x-theme-toggle />
 
-                    <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/40 text-emerald-400 text-xs font-mono">
-                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Admin Node Secure
+                    <div class="hidden sm:inline-flex items-center gap-2 px-3 h-7 rounded-full border border-emerald-300 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-medium shadow-sm leading-none">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse flex-shrink-0"></span>
+                        <span class="leading-none flex items-center">Admin Node Secure</span>
                     </div>
                 </div>
             </header>

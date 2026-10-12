@@ -19,10 +19,10 @@
                 <x-badge variant="lime" class="mb-3">
                     COMMUNITY INTELLIGENCE
                 </x-badge>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                     Forum Diskusi WASPADA
                 </h1>
-                <p class="mt-2 text-xs sm:text-sm text-[#8ba99c] leading-relaxed">
+                <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-[#8ba99c] leading-relaxed">
                     Bagikan modus baru, pelajari taktik penipuan digital terkini, dan saling menjaga keamanan transaksi bersama komunitas.
                 </p>
             </div>
@@ -119,7 +119,7 @@
                 </div>
             </x-card>
         @empty
-            <div class="rounded-2xl border border-dashed border-[#1f372c] p-12 text-center text-xs text-[#6e8a7d]">
+            <div class="rounded-2xl border border-dashed border-slate-300 dark:border-[#1f372c] p-12 text-center text-xs text-slate-500 dark:text-[#6e8a7d]">
                 Belum ada topik diskusi yang cocok dengan filter pencarian Anda.
             </div>
         @endforelse
