@@ -52,7 +52,7 @@
                         <span class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
                             waspada<span class="h-1.5 w-1.5 rounded-full bg-[#15803d] dark:bg-[#c9f28a]"></span>
                         </span>
-                        <span class="text-[10px] font-mono tracking-wider uppercase text-slate-500 dark:text-[#4d7363]">Admin Workspace</span>
+                        <span class="text-[10px] font-mono tracking-wider uppercase text-slate-400 dark:text-[#4d7363]">Admin Workspace</span>
                     </div>
                 </div>
 
@@ -77,6 +77,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                         <span>Manajemen Pengguna</span>
+                    </a>
+
+                    <a href="{{ route('admin.discussions.index') }}"
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition {{ ($activeMenu ?? '') === 'discussions' ? 'bg-[#c9f28a] text-[#0b1411] shadow-[0_2px_10px_rgba(201,242,138,0.25)]' : 'text-slate-600 dark:text-[#90aba0] hover:bg-slate-100 dark:hover:bg-[#12231c] hover:text-slate-900 dark:hover:text-white' }}">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>Moderasi Postingan</span>
                     </a>
 
                     <a href="{{ route('admin.reports.index') }}"
