@@ -11,8 +11,10 @@ use App\Http\Controllers\DiscussionCreateController;
 use App\Http\Controllers\DiscussionCommentController;
 use App\Http\Controllers\DiscussionVoteController;
 use App\Http\Controllers\DiscussionReportController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 use App\Http\Controllers\Moderator\DashboardController as ModeratorDashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Moderator\DiscussionReportController as ModeratorDiscussionReportController;
 
 /*
@@ -72,14 +74,22 @@ Route::post('/logout', [
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [
-            DashboardController::class,
-            'admin',
+            AdminDashboardController::class,
+            'index',
         ])->name('dashboard');
+
+        Route::get('/users', [UserManagementController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/users/{user}', [UserManagementController::class, 'show'])
+            ->name('users.show');
+
+        Route::patch('/users/{user}/role', [
+            UserManagementController::class,
+            'updateRole',
+        ])->name('users.role.update');
     });
 
 /*
@@ -136,10 +146,7 @@ Route::prefix('forum')->name('forum.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin,moderator'])
-    ->prefix('moderator')
-    ->name('moderator.')
-    ->group(function () {
+Route::middleware(['auth', 'role:admin,moderator'])->prefix('moderator')->name('moderator.')->group(function () {
 
         Route::get('/', [
             ModeratorDashboardController::class,
