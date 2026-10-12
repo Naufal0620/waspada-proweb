@@ -12,6 +12,7 @@ use App\Http\Controllers\DiscussionCommentController;
 use App\Http\Controllers\DiscussionVoteController;
 use App\Http\Controllers\DiscussionReportController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\DiscussionModerationController;
 
 use App\Http\Controllers\Moderator\DashboardController as ModeratorDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -122,6 +123,26 @@ Route::middleware(['auth', 'role:admin'])
             AdminDiscussionReportController::class,
             'update',
         ])->whereNumber('id')->name('reports.update');
+
+        Route::get('/discussions', [
+            DiscussionModerationController::class,
+            'index',
+        ])->name('discussions.index');
+
+        Route::get('/discussions/{id}', [
+            DiscussionModerationController::class,
+            'show',
+        ])->whereNumber('id')->name('discussions.show');
+
+        Route::patch('/discussions/{id}/approve', [
+            DiscussionModerationController::class,
+            'approve',
+        ])->whereNumber('id')->name('discussions.approve');
+
+        Route::patch('/discussions/{id}/reject', [
+            DiscussionModerationController::class,
+            'reject',
+        ])->whereNumber('id')->name('discussions.reject');
     });
 
 
