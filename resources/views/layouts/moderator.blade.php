@@ -45,14 +45,14 @@
             <div>
                 {{-- Logo & Brand --}}
                 <div class="flex items-center gap-3 px-2 py-3 mb-8 border-b border-slate-100 dark:border-[#172c21]">
-                    <div class="h-9 w-9 rounded-xl bg-[#14261f] border border-[#234235] p-1.5 flex items-center justify-center">
+                    <div class="h-9 w-9 rounded-xl bg-slate-100 dark:bg-[#14261f] border border-slate-200 dark:border-[#234235] p-1.5 flex items-center justify-center">
                         <img src="{{ asset('images/icon.svg') }}" alt="WASPADA" class="h-6 w-6 object-contain">
                     </div>
                     <div>
                         <span class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
-                            waspada<span class="h-1.5 w-1.5 rounded-full bg-[#c9f28a]"></span>
+                            waspada<span class="h-1.5 w-1.5 rounded-full bg-[#15803d] dark:bg-[#c9f28a]"></span>
                         </span>
-                        <span class="text-[10px] font-mono tracking-wider uppercase text-[#4d7363]">Moderator Panel</span>
+                        <span class="text-[10px] font-mono tracking-wider uppercase text-slate-400 dark:text-[#4d7363]">Moderator Panel</span>
                     </div>
                 </div>
 
@@ -141,9 +141,9 @@
                 <div class="flex items-center gap-3">
                     <x-theme-toggle />
 
-                    <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-950/40 text-amber-400 text-xs font-mono">
-                        <span class="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                        Moderator Node
+                    <div class="hidden sm:inline-flex items-center gap-2 px-3 h-7 rounded-full border border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 text-xs font-mono font-medium shadow-sm leading-none">
+                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse flex-shrink-0"></span>
+                        <span class="leading-none flex items-center">Moderator Node</span>
                     </div>
                 </div>
             </header>

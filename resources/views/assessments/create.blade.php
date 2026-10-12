@@ -107,42 +107,42 @@
 {{-- =========================================================================
      SECTION 2: LIGHT SECTION (SCALE & STATS - Koflow Middle Light Section)
      ========================================================================= --}}
-<section id="stats" class="bg-[#f2f4f2] text-[#13221c] py-20 border-b border-[#dde3df]">
+<section id="stats" class="bg-[#f2f4f2] dark:bg-[#0c1813] text-[#13221c] dark:text-[#f1f5f3] py-20 border-b border-[#dde3df] dark:border-[#192f24] transition-colors">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         
         {{-- Section Eyebrow --}}
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#35614d] mb-4">
-            <span class="h-2.5 w-2.5 rounded-sm bg-[#35614d]"></span>
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#35614d] dark:text-[#c9f28a] mb-4">
+            <span class="h-2.5 w-2.5 rounded-sm bg-[#35614d] dark:bg-[#c9f28a]"></span>
             <span>Deteksi Cepat Tanpa Kompromi</span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             <div class="lg:col-span-7">
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0f1d17] leading-tight mb-5">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#0f1d17] dark:text-white leading-tight mb-5">
                     Lindungi Keputusan Finansial <br>
                     Secara Real-time
                 </h2>
-                <p class="text-sm sm:text-base text-[#4f645a] leading-relaxed max-w-xl mb-6">
+                <p class="text-sm sm:text-base text-[#4f645a] dark:text-[#90aba0] leading-relaxed max-w-xl mb-6">
                     Mekanisme pencocokan indikator heuristik mengenali karakteristik pinjaman online tanpa izin, tautan phishing transfer, hingga intimidasi debt-collector sebelum kerugian terjadi.
                 </p>
                 <a href="#assessment-form" 
-                   class="inline-flex items-center gap-2 rounded-lg bg-[#14261f] px-6 py-2.5 text-xs font-bold text-white transition hover:bg-[#1f3a2f]">
+                   class="inline-flex items-center gap-2 rounded-lg bg-[#14261f] dark:bg-[#c9f28a] px-6 py-2.5 text-xs font-bold text-white dark:text-[#0b1411] transition hover:bg-[#1f3a2f] dark:hover:bg-[#d8faa2] shadow-sm">
                     Coba Pemeriksaan Sekarang
                 </a>
             </div>
 
             {{-- Big Circular Radar graphic (inspired by light section globe in Koflow) --}}
             <div class="lg:col-span-5 flex justify-center">
-                <div class="relative w-64 h-64 rounded-full border-4 border-white bg-[#e4eae5] shadow-lg flex items-center justify-center p-6">
-                    <div class="w-full h-full rounded-full border-2 border-dashed border-[#8ba699] flex items-center justify-center relative animate-[spin_60s_linear_infinite]">
-                        <div class="absolute -top-3 bg-white px-2.5 py-0.5 rounded-full shadow text-[10px] font-bold text-[#234d3b]">Akses Rekening</div>
-                        <div class="absolute -bottom-3 bg-white px-2.5 py-0.5 rounded-full shadow text-[10px] font-bold text-[#234d3b]">Izin Kontak</div>
+                <div class="relative w-64 h-64 rounded-full border-4 border-white dark:border-[#1a3328] bg-[#e4eae5] dark:bg-[#12221b] shadow-lg flex items-center justify-center p-6 transition-colors">
+                    <div class="w-full h-full rounded-full border-2 border-dashed border-[#8ba699] dark:border-[#2b4c3e] flex items-center justify-center relative animate-[spin_60s_linear_infinite]">
+                        <div class="absolute -top-3 bg-white dark:bg-[#1a3328] px-2.5 py-0.5 rounded-full shadow text-[10px] font-bold text-[#234d3b] dark:text-[#c9f28a]">Akses Rekening</div>
+                        <div class="absolute -bottom-3 bg-white dark:bg-[#1a3328] px-2.5 py-0.5 rounded-full shadow text-[10px] font-bold text-[#234d3b] dark:text-[#c9f28a]">Izin Kontak</div>
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
                         <img src="{{ asset('images/icon.svg') }}" alt="" class="h-10 w-10 opacity-70 mb-1">
-                        <span class="text-xs font-bold text-[#14261f]">Telemetry Radar</span>
-                        <span class="text-[10px] text-[#556e62]">Active Filtering</span>
+                        <span class="text-xs font-bold text-[#14261f] dark:text-white">Telemetry Radar</span>
+                        <span class="text-[10px] text-[#556e62] dark:text-[#7d9f90]">Active Filtering</span>
                     </div>
                 </div>
             </div>
@@ -150,37 +150,37 @@
         </div>
 
         {{-- Big Numbers Grid (99.9%, 100%, 24/7, Full) from Koflow reference --}}
-        <div class="mt-20 pt-12 border-t border-[#d8e0db] grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="mt-20 pt-12 border-t border-[#d8e0db] dark:border-[#182e23] grid grid-cols-2 md:grid-cols-4 gap-8 text-center transition-colors">
             <div>
-                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] tracking-tight">
+                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] dark:text-white tracking-tight">
                     {{ count($indicators) }}
                 </div>
-                <div class="mt-2 text-xs font-bold text-[#204032] uppercase tracking-wider">Indikator Terdaftar</div>
-                <div class="text-[11px] text-[#61796e] mt-1">Sinyal modus aktif</div>
+                <div class="mt-2 text-xs font-bold text-[#204032] dark:text-[#c9f28a] uppercase tracking-wider">Indikator Terdaftar</div>
+                <div class="text-[11px] text-[#61796e] dark:text-[#789688] mt-1">Sinyal modus aktif</div>
             </div>
 
             <div>
-                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] tracking-tight">
+                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] dark:text-white tracking-tight">
                     100%
                 </div>
-                <div class="mt-2 text-xs font-bold text-[#204032] uppercase tracking-wider">Bebas Pelacakan</div>
-                <div class="text-[11px] text-[#61796e] mt-1">Privasi sepenuhnya terlindungi</div>
+                <div class="mt-2 text-xs font-bold text-[#204032] dark:text-[#c9f28a] uppercase tracking-wider">Bebas Pelacakan</div>
+                <div class="text-[11px] text-[#61796e] dark:text-[#789688] mt-1">Privasi sepenuhnya terlindungi</div>
             </div>
 
             <div>
-                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] tracking-tight">
+                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] dark:text-white tracking-tight">
                     &lt; 0.1s
                 </div>
-                <div class="mt-2 text-xs font-bold text-[#204032] uppercase tracking-wider">Waktu Analisis</div>
-                <div class="text-[11px] text-[#61796e] mt-1">Pencocokan seketika</div>
+                <div class="mt-2 text-xs font-bold text-[#204032] dark:text-[#c9f28a] uppercase tracking-wider">Waktu Analisis</div>
+                <div class="text-[11px] text-[#61796e] dark:text-[#789688] mt-1">Pencocokan seketika</div>
             </div>
 
             <div>
-                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] tracking-tight">
+                <div class="text-4xl sm:text-5xl font-extrabold text-[#0e1d17] dark:text-white tracking-tight">
                     Terbuka
                 </div>
-                <div class="mt-2 text-xs font-bold text-[#204032] uppercase tracking-wider">Akses Publik</div>
-                <div class="text-[11px] text-[#61796e] mt-1">Dapat diakses kapan saja</div>
+                <div class="mt-2 text-xs font-bold text-[#204032] dark:text-[#c9f28a] uppercase tracking-wider">Akses Publik</div>
+                <div class="text-[11px] text-[#61796e] dark:text-[#789688] mt-1">Dapat diakses kapan saja</div>
             </div>
         </div>
 

@@ -21,7 +21,7 @@
         </x-alert>
     @endif
 
-    @if ($errors->any())
+    @if (isset($errors) && $errors->any())
         <x-alert type="error">
             @foreach ($errors->all() as $error)
                 <p>{{ $error }}</p>
