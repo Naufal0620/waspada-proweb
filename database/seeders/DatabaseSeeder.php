@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             IndicatorSeeder::class,
             AssessmentQuestionSeeder::class,
             PatternSeeder::class,
+            ForumCategorySeeder::class,
+            ForumDemoSeeder::class
         ]);
     }
 }

@@ -3,7 +3,9 @@
 @section('title', 'Detail Laporan #' . $report->id)
 @section('breadcrumb', 'Detail Laporan')
 
-@php($activeMenu = 'reports')
+@php
+    $activeMenu = 'reports';
+@endphp
 
 @section('content')
 <div class="space-y-6 max-w-4xl">

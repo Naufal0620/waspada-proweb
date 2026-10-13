@@ -35,11 +35,13 @@ class AuthController extends Controller
             'role' => 'user',
         ]);
 
+        event(new \Illuminate\Auth\Events\Registered($user));
+
         Auth::login($user);
         $request->session()->regenerate();
 
         return redirect()
-            ->route('assessments.create')
+            ->route('dashboard')
             ->with('success', 'Akun berhasil dibuat.');
     }
 
@@ -58,7 +60,15 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('assessments.create'));
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+        if ($user->role === 'moderator') {
+            return redirect()->intended(route('moderator.dashboard'));
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
 
     public function logout(Request $request)

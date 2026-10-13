@@ -63,7 +63,7 @@
                     @enderror
                 </div>
 
-                {{-- Remember Me --}}
+                {{-- Remember Me & Forgot Password --}}
                 <div class="flex items-center justify-between text-xs pt-1">
                     <label class="flex items-center gap-2 cursor-pointer text-slate-600 dark:text-[#8fa89d]">
                         <input type="checkbox" 
@@ -72,6 +72,10 @@
                                class="h-4 w-4 rounded border-slate-300 dark:border-[#2e5643] bg-white dark:bg-[#08120e] text-emerald-600 dark:text-[#c9f28a] focus:ring-emerald-500 accent-[#15803d] dark:accent-[#c9f28a]">
                         <span>Ingat sesi saya</span>
                     </label>
+
+                    <a href="{{ route('password.request') }}" class="font-semibold text-emerald-700 dark:text-[#c9f28a] hover:underline">
+                        Lupa kata sandi?
+                    </a>
                 </div>
 
                 {{-- Submit Button --}}

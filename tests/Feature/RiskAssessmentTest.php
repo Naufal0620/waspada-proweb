@@ -191,7 +191,7 @@ class RiskAssessmentTest extends TestCase
             [$identity, $credential, $link]
         );
 
-        // Hanya dua dari tiga indikator pola yang dipilih.
+        // Dua dari tiga indikator pola dipilih → threshold ≥2 terpenuhi → terdeteksi.
         $response = $this->postJson('/assessments', [
             'indicators' => [
                 $identity->id,
@@ -201,8 +201,8 @@ class RiskAssessmentTest extends TestCase
 
         $response
             ->assertCreated()
-            ->assertJsonPath('data.risk_level', 'low')
-            ->assertJsonCount(0, 'data.matched_patterns');
+            ->assertJsonPath('data.risk_level', 'high')
+            ->assertJsonCount(1, 'data.matched_patterns');
     }
 
     public function test_multiple_matching_patterns_are_returned(): void

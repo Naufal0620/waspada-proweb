@@ -38,4 +38,32 @@ class DiscussionCommentController extends Controller
             ->route('forum.show', $discussion->slug)
             ->with('success', 'Komentar berhasil ditambahkan.');
     }
+
+    public function update(Request $request, string $slug, DiscussionComment $comment)
+    {
+        $this->authorize('update', $comment);
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'min:2', 'max:3000'],
+        ]);
+
+        $comment->update([
+            'body' => $validated['body'],
+        ]);
+
+        return redirect()
+            ->route('forum.show', $slug)
+            ->with('success', 'Komentar berhasil diperbarui.');
+    }
+
+    public function destroy(Request $request, string $slug, DiscussionComment $comment)
+    {
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+
+        return redirect()
+            ->route('forum.show', $slug)
+            ->with('success', 'Komentar berhasil dihapus.');
+    }
 }

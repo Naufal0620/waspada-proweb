@@ -3,7 +3,9 @@
 @section('title', 'Periksa Postingan')
 @section('breadcrumb', 'Periksa Postingan')
 
-@php($activeMenu = 'discussions')
+@php
+    $activeMenu = 'discussions';
+@endphp
 
 @push('styles')
 <style>

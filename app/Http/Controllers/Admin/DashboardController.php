@@ -29,12 +29,20 @@ class DashboardController extends Controller
         )->count();
 
         $totalPatterns = Pattern::count();
+
+        $totalAssessments = \App\Models\Assessment::count();
+        $highRiskAssessments = \App\Models\Assessment::where('risk_level', 'high')->count();
         
         $latestDiscussions = Discussion::latest()
             ->take(5)
             ->get();
 
         $latestReports = DiscussionReport::with('discussion')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $latestAssessments = \App\Models\Assessment::with('user', 'indicators')
             ->latest()
             ->take(5)
             ->get();
@@ -46,8 +54,11 @@ class DashboardController extends Controller
             'totalReports',
             'pendingReports',
             'totalPatterns',
+            'totalAssessments',
+            'highRiskAssessments',
             'latestDiscussions',
-            'latestReports'
+            'latestReports',
+            'latestAssessments'
         ));
 
     }

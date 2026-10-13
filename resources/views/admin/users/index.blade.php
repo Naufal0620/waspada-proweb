@@ -3,7 +3,9 @@
 @section('title', 'Manajemen Pengguna')
 @section('breadcrumb', 'Manajemen Pengguna')
 
-@php($activeMenu = 'users')
+@php
+    $activeMenu = 'users';
+@endphp
 
 @section('content')
 <div class="space-y-6">

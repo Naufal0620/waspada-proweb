@@ -3,7 +3,9 @@
 @section('title', 'Dashboard Moderator')
 @section('breadcrumb', 'Dashboard')
 
-@php($activeMenu = 'dashboard')
+@php
+    $activeMenu = 'dashboard';
+@endphp
 
 @section('content')
 <div class="space-y-8">

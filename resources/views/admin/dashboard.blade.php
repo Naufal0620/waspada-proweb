@@ -3,7 +3,9 @@
 @section('title', 'Dashboard Overview')
 @section('breadcrumb', 'Dashboard Overview')
 
-@php($activeMenu = 'dashboard')
+@php
+    $activeMenu = 'dashboard';
+@endphp
 
 @section('content')
 <div class="space-y-8">
@@ -26,9 +28,9 @@
 
     {{-- Stats Bento Grid (6 Metrics) --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        
+
         {{-- Card 1: Total Users --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-[#7d9f90]">Total Pengguna</span>
                 <div class="h-9 w-9 rounded-xl bg-[#c9f28a]/20 border border-[#c9f28a]/40 text-[#0b1411] dark:text-[#c9f28a] font-bold flex items-center justify-center">
@@ -43,10 +45,10 @@
                 </div>
                 <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Seluruh akun yang terdaftar</div>
             </div>
-        </x-card>
+        </div>
 
         {{-- Card 2: Total Discussions --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-[#7d9f90]">Total Diskusi</span>
                 <div class="h-9 w-9 rounded-xl bg-teal-500/10 border border-teal-500/30 text-teal-600 dark:text-teal-400 font-bold flex items-center justify-center">
@@ -61,10 +63,10 @@
                 </div>
                 <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Diskusi dari seluruh kategori</div>
             </div>
-        </x-card>
+        </div>
 
         {{-- Card 3: Pending Discussions --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Diskusi Menunggu</span>
                 <div class="h-9 w-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-bold flex items-center justify-center">
@@ -79,10 +81,10 @@
                 </div>
                 <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Menunggu moderasi persetujuan</div>
             </div>
-        </x-card>
+        </div>
 
         {{-- Card 4: Total Reports --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-[#7d9f90]">Total Laporan</span>
                 <div class="h-9 w-9 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 font-bold flex items-center justify-center">
@@ -97,10 +99,10 @@
                 </div>
                 <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Seluruh tiket laporan pengguna</div>
             </div>
-        </x-card>
+        </div>
 
         {{-- Card 5: Pending Reports --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">Laporan Pending</span>
                 <div class="h-9 w-9 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-600 dark:text-rose-400 font-bold flex items-center justify-center">
@@ -113,28 +115,30 @@
                 </div>
                 <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Laporan perlu ditindaklanjuti</div>
             </div>
-        </x-card>
+        </div>
 
-        {{-- Card 6: Total Patterns --}}
-        <x-card class="flex flex-col justify-between">
+        {{-- Card 6: Total Assessments --}}
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-[#7d9f90]">Pola Penipuan</span>
-                <div class="h-9 w-9 rounded-xl bg-[#c9f28a]/20 border border-[#c9f28a]/40 text-[#0b1411] dark:text-[#c9f28a] font-bold flex items-center justify-center">
-                    ◇
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-[#7d9f90]">Total Asesmen</span>
+                <div class="h-9 w-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-[#c9f28a] font-bold flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
                 </div>
             </div>
             <div>
                 <div class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight font-mono">
-                    {{ number_format($totalPatterns) }}
+                    {{ number_format($totalAssessments) }}
                 </div>
-                <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">Pola risiko tersimpan di sistem</div>
+                <div class="text-xs text-slate-400 dark:text-[#6c8c7d] mt-1">{{ number_format($highRiskAssessments) }} terdeteksi risiko tinggi</div>
             </div>
-        </x-card>
+        </div>
 
     </div>
 
     {{-- Moderation Action Overview Card --}}
-    <x-card variant="elevated">
+    <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#12221b] border-slate-200 dark:border-[#254637] shadow-[0_15px_35px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
             <span class="h-2 w-2 rounded-full bg-[#c9f28a]"></span>
             Tindakan Prioritas Moderasi
@@ -144,8 +148,8 @@
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            <a href="{{ route('admin.reports.index') }}" 
+
+            <a href="{{ route('admin.reports.index') }}"
                class="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-[#213f30] bg-slate-50 dark:bg-[#0c1813] hover:border-[#c9f28a]/50 transition group">
                 <div class="flex items-center gap-3">
                     <span class="h-3 w-3 rounded-full bg-amber-400"></span>
@@ -163,7 +167,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('forum.index') }}" 
+            <a href="{{ route('forum.index') }}"
                class="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-[#213f30] bg-slate-50 dark:bg-[#0c1813] hover:border-[#c9f28a]/50 transition group">
                 <div class="flex items-center gap-3">
                     <span class="h-3 w-3 rounded-full bg-[#c9f28a]"></span>
@@ -182,13 +186,13 @@
             </a>
 
         </div>
-    </x-card>
+    </div>
 
     {{-- Recent Activity Feeds --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {{-- Diskusi Terbaru --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-[#1b3427]">
                     <div>
@@ -202,6 +206,13 @@
 
                 <div class="divide-y divide-slate-100 dark:divide-[#193225]">
                     @forelse ($latestDiscussions as $discussion)
+                        @php
+                            $dStatusClass = match($discussion->status) {
+                                'published' => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-[#c9f28a]',
+                                'pending'   => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                default     => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
+                            };
+                        @endphp
                         <div class="py-3.5 first:pt-0 last:pb-0 flex items-start gap-3">
                             <div class="h-8 w-8 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                                 D
@@ -217,9 +228,7 @@
                                     </h3>
                                 @endif
                                 <div class="flex flex-wrap items-center gap-2 mt-1.5 text-[11px] text-slate-400 dark:text-[#6b8b7e]">
-                                    <x-badge :variant="$discussion->status === 'published' ? 'published' : ($discussion->status === 'pending' ? 'pending' : 'dismissed')">
-                                        {{ ucfirst($discussion->status) }}
-                                    </x-badge>
+                                    <span class="{{ $dStatusClass }}">{{ ucfirst($discussion->status) }}</span>
                                     <span>•</span>
                                     <span>{{ $discussion->created_at->format('d M Y, H:i') }}</span>
                                 </div>
@@ -236,10 +245,10 @@
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-[#1b3427] text-[11px] font-mono text-slate-400 dark:text-[#5d7c6f]">
                 Menampilkan maksimal 5 diskusi terbaru
             </div>
-        </x-card>
+        </div>
 
         {{-- Laporan Terbaru --}}
-        <x-card class="flex flex-col justify-between">
+        <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-[#1b3427]">
                     <div>
@@ -253,6 +262,13 @@
 
                 <div class="divide-y divide-slate-100 dark:divide-[#193225]">
                     @forelse ($latestReports as $report)
+                        @php
+                            $rStatusClass = match($report->status) {
+                                'actioned' => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-[#c9f28a]',
+                                'pending'  => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                default    => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400',
+                            };
+                        @endphp
                         <div class="py-3.5 first:pt-0 last:pb-0 flex items-start gap-3">
                             <div class="h-8 w-8 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                                 !
@@ -265,9 +281,7 @@
                                     {{ $report->reason }}
                                 </p>
                                 <div class="flex flex-wrap items-center gap-2 mt-1.5 text-[11px] text-slate-400 dark:text-[#6b8b7e]">
-                                    <x-badge :variant="$report->status === 'pending' ? 'pending' : ($report->status === 'actioned' ? 'published' : 'dismissed')">
-                                        {{ ucfirst($report->status) }}
-                                    </x-badge>
+                                    <span class="{{ $rStatusClass }}">{{ ucfirst($report->status) }}</span>
                                     <span>•</span>
                                     <span>{{ $report->created_at->format('d M Y, H:i') }}</span>
                                 </div>
@@ -284,8 +298,86 @@
             <div class="pt-4 mt-4 border-t border-slate-100 dark:border-[#1b3427] text-[11px] font-mono text-slate-400 dark:text-[#5d7c6f]">
                 Menampilkan maksimal 5 laporan terbaru
             </div>
-        </x-card>
+        </div>
 
+    </div>
+
+    {{-- Asesmen Risiko Terbaru --}}
+    <div class="rounded-2xl sm:rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-colors bg-white dark:bg-[#0f1d17] border-slate-200 dark:border-[#1b3327] shadow-sm dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-[#1b3427]">
+            <div>
+                <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 dark:bg-[#c9f28a]"></span>
+                    Pemeriksaan Risiko Terbaru oleh Pengguna
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-[#7e9f90] mt-0.5">Pantau skrining ancaman siber dan penipuan yang dilakukan masyarakat.</p>
+            </div>
+            <a href="{{ route('admin.assessments.index') }}" class="text-xs font-mono text-[#15803d] dark:text-[#c9f28a] hover:underline">
+                Lihat Semua Asesmen →
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+                <thead class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-[#7d9f90] border-b border-slate-100 dark:border-[#1a3328]">
+                    <tr>
+                        <th class="py-2.5 px-3">Sesi / ID</th>
+                        <th class="py-2.5 px-3">Pengguna</th>
+                        <th class="py-2.5 px-3">Tingkat Risiko</th>
+                        <th class="py-2.5 px-3">Indikator Terpilih</th>
+                        <th class="py-2.5 px-3">Waktu</th>
+                        <th class="py-2.5 px-3 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-[#172c21]">
+                    @forelse ($latestAssessments as $asm)
+                        @php
+                            $asmColorClass = match($asm->risk_level) {
+                                'high'    => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400',
+                                'warning' => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                default   => 'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-[#c9f28a]',
+                            };
+                            $asmLabel = match($asm->risk_level) {
+                                'high'    => 'CRITICAL',
+                                'warning' => 'WARNING',
+                                default   => 'LOW',
+                            };
+                        @endphp
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-[#12221b]/50">
+                            <td class="py-3 px-3 font-mono font-semibold text-slate-800 dark:text-[#c4d8ce]">
+                                #SEC-{{ str_pad($asm->id, 5, '0', STR_PAD_LEFT) }}
+                            </td>
+                            <td class="py-3 px-3">
+                                @if($asm->user)
+                                    <span class="font-bold text-slate-900 dark:text-white">{{ $asm->user->name }}</span>
+                                    <span class="block text-[10px] text-slate-400 font-mono">{{ $asm->user->email }}</span>
+                                @else
+                                    <span class="text-slate-400 font-mono italic">Pengguna Tamu (Anonim)</span>
+                                @endif
+                            </td>
+                            <td class="py-3 px-3">
+                                <span class="{{ $asmColorClass }}">{{ $asmLabel }}</span>
+                            </td>
+                            <td class="py-3 px-3 text-slate-600 dark:text-[#9eb5aa]">
+                                {{ $asm->indicators->count() }} sinyal terdeteksi
+                            </td>
+                            <td class="py-3 px-3 font-mono text-slate-400 text-[11px]">
+                                {{ $asm->created_at->diffForHumans() }}
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                <a href="{{ route('admin.assessments.show', $asm->id) }}" class="text-emerald-700 dark:text-[#c9f28a] font-semibold hover:underline">
+                                    Detail →
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-6 text-center text-slate-400">Belum ada asesmen tersimpan.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

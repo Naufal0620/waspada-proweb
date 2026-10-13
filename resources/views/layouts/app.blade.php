@@ -37,7 +37,7 @@
                 
                 {{-- Brand Logo --}}
                 <div class="flex items-center gap-10">
-                    <a href="{{ route('assessments.create') }}" class="flex items-center gap-3 group">
+                    <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                         <div class="h-9 w-9 rounded-xl bg-slate-100 dark:bg-[#14231e] border border-slate-200 dark:border-[#233b31] p-1.5 flex items-center justify-center transition group-hover:border-[#c9f28a]/60">
                             <img src="{{ asset('images/icon.svg') }}" alt="WASPADA" class="h-6 w-6 object-contain">
                         </div>
@@ -48,6 +48,10 @@
 
                     {{-- Navigation Links --}}
                     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-[#9eb3a8]">
+                        <a href="{{ route('home') }}" 
+                           class="transition hover:text-slate-950 dark:hover:text-white flex items-center gap-1.5 {{ request()->routeIs('home') ? 'text-emerald-700 dark:text-[#c9f28a] font-semibold' : '' }}">
+                            Beranda
+                        </a>
                         <a href="{{ route('assessments.create') }}" 
                            class="transition hover:text-slate-950 dark:hover:text-white flex items-center gap-1.5 {{ request()->routeIs('assessments.*') ? 'text-emerald-700 dark:text-[#c9f28a] font-semibold' : '' }}">
                             Cek Risiko
@@ -56,6 +60,14 @@
                            class="transition hover:text-slate-950 dark:hover:text-white flex items-center gap-1.5 {{ request()->routeIs('forum.*') ? 'text-emerald-700 dark:text-[#c9f28a] font-semibold' : '' }}">
                             Forum Komunitas
                         </a>
+                        @auth
+                            @if(auth()->user()->role === 'user')
+                                <a href="{{ route('dashboard') }}" 
+                                   class="transition hover:text-slate-950 dark:hover:text-white flex items-center gap-1.5 {{ request()->routeIs('dashboard') ? 'text-emerald-700 dark:text-[#c9f28a] font-semibold' : '' }}">
+                                    Dashboard
+                                </a>
+                            @endif
+                        @endauth
                     </nav>
                 </div>
 
@@ -70,20 +82,28 @@
                                 <a href="{{ route('admin.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-[#14231e] border border-emerald-200 dark:border-[#233b31] text-emerald-800 dark:text-[#c9f28a] hover:bg-emerald-100 dark:hover:bg-[#1a2d26] transition font-semibold shadow-sm">
                                     Panel Admin
                                 </a>
-                            @elseif(in_array(auth()->user()->role, ['moderator', 'admin']))
+                            @elseif(auth()->user()->role === 'moderator')
                                 <a href="{{ route('moderator.dashboard') }}" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-[#14231e] border border-emerald-200 dark:border-[#233b31] text-emerald-800 dark:text-[#c9f28a] hover:bg-emerald-100 dark:hover:bg-[#1a2d26] transition font-semibold shadow-sm">
                                     Panel Mod
                                 </a>
                             @endif
 
-                            <div class="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-[#1c2c26]">
+                            @php
+                                $profileRoute = match(auth()->user()->role) {
+                                    'admin' => route('admin.dashboard'),
+                                    'moderator' => route('moderator.dashboard'),
+                                    default => route('dashboard'),
+                                };
+                            @endphp
+
+                            <a href="{{ $profileRoute }}" class="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-[#1c2c26] hover:opacity-80 transition" title="Ke Dashboard">
                                 <div class="h-8 w-8 rounded-full bg-[#c9f28a] text-[#0b1411] font-bold text-xs flex items-center justify-center uppercase shadow-sm">
                                     {{ substr(auth()->user()->name, 0, 1) }}
                                 </div>
                                 <span class="hidden sm:inline-block text-xs font-semibold text-slate-800 dark:text-[#c4d6cd]">
                                     {{ auth()->user()->name }}
                                 </span>
-                            </div>
+                            </a>
 
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
@@ -142,9 +162,10 @@
                 <div>
                     <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-sm">Fitur Utama</h4>
                     <ul class="space-y-2.5">
+                        <li><a href="{{ route('home') }}" class="hover:text-emerald-700 dark:hover:text-[#c9f28a] transition">Beranda</a></li>
                         <li><a href="{{ route('assessments.create') }}" class="hover:text-emerald-700 dark:hover:text-[#c9f28a] transition">Deteksi Pola Risiko</a></li>
                         <li><a href="{{ route('forum.index') }}" class="hover:text-emerald-700 dark:hover:text-[#c9f28a] transition">Forum Komunitas</a></li>
-                        <li><a href="{{ route('assessments.create') }}#stats" class="hover:text-emerald-700 dark:hover:text-[#c9f28a] transition">Metrik Keamanan</a></li>
+                        <li><a href="{{ route('home') }}#stats" class="hover:text-emerald-700 dark:hover:text-[#c9f28a] transition">Metrik Keamanan</a></li>
                     </ul>
                 </div>
 

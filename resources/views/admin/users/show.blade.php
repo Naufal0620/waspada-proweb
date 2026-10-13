@@ -3,7 +3,9 @@
 @section('title', 'Detail Pengguna: ' . $user->name)
 @section('breadcrumb', 'Manajemen Pengguna / Detail')
 
-@php($activeMenu = 'users')
+@php
+    $activeMenu = 'users';
+@endphp
 
 @section('content')
 <div class="space-y-6 max-w-4xl mx-auto">

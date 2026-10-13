@@ -3,7 +3,9 @@
 @section('title', 'Laporan Diskusi')
 @section('breadcrumb', 'Laporan Diskusi')
 
-@php($activeMenu = 'reports')
+@php
+    $activeMenu = 'reports';
+@endphp
 
 @section('content')
 <div class="space-y-6">

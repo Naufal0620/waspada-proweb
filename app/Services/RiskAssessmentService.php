@@ -14,9 +14,9 @@ use Illuminate\Validation\ValidationException;
 
 class RiskAssessmentService
 {
-    public function assess(array $answers): Assessment
+    public function assess(array $answers, ?int $userId = null): Assessment
     {
-        return DB::transaction(function () use ($answers) {
+        return DB::transaction(function () use ($answers, $userId) {
             $questions = AssessmentQuestion::query()
                 ->where('is_active', true)
                 ->with('options.indicators')
@@ -133,6 +133,7 @@ class RiskAssessmentService
             }
 
             $assessment = Assessment::create([
+                'user_id' => $userId,
                 'session_id' => (string) Str::uuid(),
                 'risk_level' => $riskLevel,
                 'information_status' => $informationStatus,
@@ -164,6 +165,59 @@ class RiskAssessmentService
                 'matchedPatterns',
                 $matchedPatterns
             );
+
+            return $assessment->load('indicators');
+        });
+    }
+
+    /**
+     * Membuat assessment langsung dari array indicator IDs (digunakan oleh API/test).
+     */
+    public function assessFromIndicators(array $indicatorIds, ?int $userId = null): Assessment
+    {
+        return DB::transaction(function () use ($indicatorIds, $userId) {
+            $selectedIndicatorIds = array_values(array_unique($indicatorIds));
+
+            $patterns = Pattern::query()->with('indicators')->get();
+
+            $matchedPatterns = $patterns->filter(function ($pattern) use ($selectedIndicatorIds) {
+                $patternIndicatorIds = $pattern->indicators
+                    ->where('is_active', true)
+                    ->modelKeys();
+
+                if (count($patternIndicatorIds) < 2) {
+                    return false;
+                }
+
+                return count(array_intersect($patternIndicatorIds, $selectedIndicatorIds)) >= 2;
+            })->values();
+
+            $riskLevel = 'low';
+            if ($matchedPatterns->contains(fn ($p) => $p->risk_level === 'high')) {
+                $riskLevel = 'high';
+            } elseif ($matchedPatterns->isNotEmpty()) {
+                $riskLevel = 'warning';
+            }
+
+            $assessment = Assessment::create([
+                'user_id'            => $userId,
+                'session_id'         => (string) Str::uuid(),
+                'risk_level'         => $riskLevel,
+                'information_status' => 'sufficient',
+                'match_status'       => $matchedPatterns->isNotEmpty() ? 'matched' : 'no_match',
+            ]);
+
+            if (!empty($selectedIndicatorIds)) {
+                $assessment->indicators()->sync(
+                    Indicator::query()
+                        ->where('is_active', true)
+                        ->whereIn('id', $selectedIndicatorIds)
+                        ->pluck('id')
+                        ->all()
+                );
+            }
+
+            $assessment->setRelation('matchedPatterns', $matchedPatterns);
 
             return $assessment->load('indicators');
         });

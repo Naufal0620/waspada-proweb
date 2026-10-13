@@ -63,4 +63,45 @@ class DiscussionController extends Controller
 
         return view('forum.show', compact('discussion'));
     }
+
+    public function edit(Discussion $discussion)
+    {
+        $this->authorize('update', $discussion);
+
+        $categories = ForumCategory::orderBy('name')->get();
+
+        return view('forum.edit', compact('discussion', 'categories'));
+    }
+
+    public function update(Request $request, Discussion $discussion)
+    {
+        $this->authorize('update', $discussion);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:10', 'max:200'],
+            'category_id' => ['required', 'integer', 'exists:forum_categories,id'],
+            'body' => ['required', 'string', 'min:30', 'max:10000'],
+        ]);
+
+        $discussion->update([
+            'title' => $validated['title'],
+            'category_id' => $validated['category_id'],
+            'body' => $validated['body'],
+        ]);
+
+        return redirect()
+            ->route('forum.show', $discussion->slug)
+            ->with('success', 'Diskusi berhasil diperbarui.');
+    }
+
+    public function destroy(Discussion $discussion)
+    {
+        $this->authorize('delete', $discussion);
+
+        $discussion->delete();
+
+        return redirect()
+            ->route('forum.index')
+            ->with('success', 'Diskusi berhasil dihapus.');
+    }
 }

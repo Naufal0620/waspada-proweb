@@ -87,9 +87,35 @@
             {{ $discussion->body }}
         </div>
 
-        {{-- Report Dropdown --}}
+        {{-- Report & Owner Controls --}}
         @auth
-            <div class="mt-6 pt-2 flex items-center justify-between">
+            <div class="mt-6 pt-2 flex flex-wrap items-center justify-between gap-4">
+                {{-- Owner Edit / Delete Controls --}}
+                <div class="flex items-center gap-3">
+                    @can('update', $discussion)
+                        <x-button variant="outline" size="sm" href="{{ route('forum.edit', $discussion->slug) }}">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            <span>Edit Diskusi</span>
+                        </x-button>
+                    @endcan
+
+                    @can('delete', $discussion)
+                        <form action="{{ route('forum.destroy', $discussion->slug) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus diskusi ini? Tindakan ini tidak dapat dibatalkan.');">
+                            @csrf
+                            @method('DELETE')
+                            <x-button variant="danger" size="sm" type="submit">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                <span>Hapus</span>
+                            </x-button>
+                        </form>
+                    @endcan
+                </div>
+
+                {{-- Report Trigger --}}
                 <details class="text-xs text-rose-600 dark:text-rose-400 group">
                     <summary class="cursor-pointer font-semibold flex items-center gap-1.5 hover:text-rose-700 dark:hover:text-rose-300">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,32 +183,74 @@
                         </span>
                     </div>
 
-                    <p class="text-slate-700 dark:text-[#c7dbd2] leading-relaxed pl-8 mb-3 whitespace-pre-line">
+                    <p class="text-slate-700 dark:text-[#c7dbd2] leading-relaxed pl-8 mb-3 whitespace-pre-line" id="comment-body-{{ $comment->id }}">
                         {{ $comment->body }}
                     </p>
 
                     @auth
-                        <div class="pl-8">
+                        <div class="pl-8 flex flex-wrap items-center gap-4">
                             <button type="button"
                                     onclick="document.getElementById('reply-form-{{ $comment->id }}').hidden = !document.getElementById('reply-form-{{ $comment->id }}').hidden"
                                     class="text-xs font-semibold text-emerald-700 dark:text-[#c9f28a] hover:underline cursor-pointer">
-                                ↳ Balas komentar
+                                ↳ Balas
                             </button>
 
-                            <form id="reply-form-{{ $comment->id }}"
-                                  action="{{ route('forum.comments.store', $discussion->slug) }}" method="POST" 
-                                  hidden
-                                  class="mt-3 space-y-2">
-                                @csrf
-                                <input type="hidden" name="parent_id" value="{{ $comment->id }}">
-                                <textarea name="body" rows="2" minlength="2" maxlength="3000" required 
-                                          placeholder="Tulis balasan Anda..."
-                                          class="w-full rounded-lg border border-slate-200 dark:border-[#213f31] bg-white dark:bg-[#09130f] px-3 py-2 text-xs text-slate-900 dark:text-white focus:border-[#c9f28a] focus:outline-none"></textarea>
-                                <x-button variant="lime" size="sm" type="submit">
-                                    Kirim Balasan
-                                </x-button>
-                            </form>
+                            @can('update', $comment)
+                                <button type="button"
+                                        onclick="document.getElementById('edit-comment-form-{{ $comment->id }}').hidden = !document.getElementById('edit-comment-form-{{ $comment->id }}').hidden; document.getElementById('comment-body-{{ $comment->id }}').hidden = !document.getElementById('comment-body-{{ $comment->id }}').hidden"
+                                        class="text-xs font-semibold text-slate-500 hover:text-slate-700 dark:text-[#7f998d] dark:hover:text-white cursor-pointer">
+                                    Edit
+                                </button>
+                            @endcan
+
+                            @can('delete', $comment)
+                                <form action="{{ route('forum.comments.destroy', [$discussion->slug, $comment->id]) }}" method="POST" class="inline" onsubmit="return confirm('Hapus komentar ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs font-semibold text-rose-500 hover:text-rose-700 dark:text-rose-400 cursor-pointer">
+                                        Hapus
+                                    </button>
+                                </form>
+                            @endcan
                         </div>
+
+                        {{-- Edit Comment Form --}}
+                        @can('update', $comment)
+                            <form id="edit-comment-form-{{ $comment->id }}"
+                                  action="{{ route('forum.comments.update', [$discussion->slug, $comment->id]) }}" method="POST"
+                                  hidden
+                                  class="mt-3 pl-8 space-y-2">
+                                @csrf
+                                @method('PUT')
+                                <textarea name="body" rows="3" minlength="2" maxlength="3000" required 
+                                          class="w-full rounded-lg border border-slate-200 dark:border-[#213f31] bg-white dark:bg-[#09130f] px-3 py-2 text-xs text-slate-900 dark:text-white focus:border-[#c9f28a] focus:outline-none">{{ $comment->body }}</textarea>
+                                <div class="flex items-center gap-2">
+                                    <x-button variant="lime" size="sm" type="submit">
+                                        Simpan
+                                    </x-button>
+                                    <button type="button" 
+                                            onclick="document.getElementById('edit-comment-form-{{ $comment->id }}').hidden = true; document.getElementById('comment-body-{{ $comment->id }}').hidden = false"
+                                            class="text-xs text-slate-500 hover:underline">
+                                        Batal
+                                    </button>
+                                </div>
+                            </form>
+                        @endcan
+
+                        {{-- Reply Form --}}
+                        <form id="reply-form-{{ $comment->id }}"
+                              action="{{ route('forum.comments.store', $discussion->slug) }}" method="POST" 
+                              hidden
+                              class="mt-3 pl-8 space-y-2">
+                            @csrf
+                            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                            <textarea name="body" rows="2" minlength="2" maxlength="3000" required 
+                                      placeholder="Tulis balasan Anda..."
+                                      class="w-full rounded-lg border border-slate-200 dark:border-[#213f31] bg-white dark:bg-[#09130f] px-3 py-2 text-xs text-slate-900 dark:text-white focus:border-[#c9f28a] focus:outline-none"></textarea>
+                            <x-button variant="lime" size="sm" type="submit">
+                                Kirim Balasan
+                            </x-button>
+                        </form>
                     @endauth
 
                     {{-- Nested Replies --}}
@@ -192,7 +260,18 @@
                                 <div class="rounded-lg bg-slate-100 dark:bg-[#0e1d17] p-3 text-xs">
                                     <div class="flex items-center justify-between mb-1 text-[11px]">
                                         <strong class="text-slate-900 dark:text-white">{{ $reply->user->name }}</strong>
-                                        <span class="font-mono text-slate-500 dark:text-[#607d70]">{{ $reply->created_at->format('d M Y, H:i') }}</span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-mono text-slate-500 dark:text-[#607d70]">{{ $reply->created_at->format('d M Y, H:i') }}</span>
+                                            @auth
+                                                @can('delete', $reply)
+                                                    <form action="{{ route('forum.comments.destroy', [$discussion->slug, $reply->id]) }}" method="POST" class="inline" onsubmit="return confirm('Hapus balasan ini?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-rose-500 hover:text-rose-700 text-[10px] font-semibold">Hapus</button>
+                                                    </form>
+                                                @endcan
+                                            @endauth
+                                        </div>
                                     </div>
                                     <p class="text-slate-700 dark:text-[#b4cbbf] leading-relaxed">{{ $reply->body }}</p>
                                 </div>
